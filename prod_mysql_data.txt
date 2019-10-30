@@ -1,0 +1,17 @@
+connst hostMysql={
+    dbName:'asasf_24626468_vcoin',
+    dbUser:'asasf_24626468',
+    password:'78789846',
+    host:'sql303.hostinglifes.ga'
+}
+
+MYSQL_ADDON_HOST=bve6dsbfjomqknxl1zt3-mysql.services.clever-cloud.com
+MYSQL_ADDON_DB=bve6dsbfjomqknxl1zt3
+MYSQL_ADDON_USER=uh0f7khjnicpyoha
+MYSQL_ADDON_PORT=3306
+MYSQL_ADDON_PASSWORD=GRfj2F8gwxOGqNQUirSh 
+MYSQL_ADDON_URI=mysql://uh0f7khjnicpyoha:GRfj2F8gwxOGqNQUirSh@bve6dsbfjomqknxl1zt3-mysql.services.clever-cloud.com:3306/bve6dsbfjomqknxl1zt3
+
+cli:
+
+.\mysql -h bve6dsbfjomqknxl1zt3-mysql.services.clever-cloud.com -P 3306 -u uh0f7khjnicpyoha -p bve6dsbfjomqknxl1zt3
