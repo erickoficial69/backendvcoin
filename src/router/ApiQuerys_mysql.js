@@ -193,7 +193,7 @@ router.get('/confirm/:token?/:correo?/:status?', async(rq,rs)=>{
     const {correo,status} = rq.params
     try{
         await pool.query('update usuarios set ? where correo =?',[{userStatus:status},correo])
-        rs.redirect('http://vcointransfer.erickoficial69.now.sh')
+        rs.redirect('https://vcointransfer.erickoficial69.now.sh/')
     }
     catch(err){
         console.log(err)

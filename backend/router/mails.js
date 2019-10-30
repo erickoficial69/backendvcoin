@@ -1,8 +1,0 @@
-"use strict";
-
-var registerMail = function registerMail(token, email) {
-  return;
-  "\n<div style=\"\n   background-color: white;\n   width: 80%;\n   height: 250px;\n   position: relative;\n   margin: 0 auto;\n   text-align: center;\n   border: 2px solid #eaeaea;\n   border-radius: 15px;\n   overflow: hidden\n   \">\n        <h1 style=\"\n    font-size:30px;\n    text-align: center;\n    font-weight: bold;\n    text-transform: uppercase;\n    font-family: sans-serif;\n    color: white;\n    background-color: rgb(16, 108, 160);\n    padding: 15px 0;\n    margin-top: -1px;\n    line-height: 2;\n    \">\xA1Bienvenido!</h1>\n        <p style=\"\n       color: rgb(122,122,122);\n       text-align: left;\n       font-size: 16px;\n       font-family: sans-serif;\n       padding: 0 20px;\n       margin-bottom: 50px;\n       \">\n            Para contuniar con el registro de tu cuenta en VcoinTransfer verifica este correo usando el boton <strong style=\"\n        color: rgb(16, 108, 160);\n        font-family: sans-serif;\n        font-size: 14px;\n        \"> AZUL </strong>de alli abajo\n        </p>\n        <a style=\"\n        background-color: rgb(16, 108, 160);\n      \n        height: 45px;\n        width: 100px;\n        color: white;\n        text-decoration: none;\n        font-weight: bold;\n        font-family: sans-serif;\n        text-transform: uppercase;\n        padding: 10px 25px; \n        border-radius: 7px;\n                \" href=\"https://backendvcoin.herokuapp.com/confirm/".concat(token, "/").concat(email, "/confirmado\">Verificar cuenta</a>\n    </div>\n");
-};
-
-module.exports = registerMail;
