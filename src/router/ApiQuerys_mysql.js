@@ -1,7 +1,7 @@
 const pool = require('../mysql/mysql') 
 const {Router} = require('express') 
 const nodemailer = require('nodemailer')
-const register = require('./mails')
+
 const {join} = require('path')
 
 var smtpConfig = {
