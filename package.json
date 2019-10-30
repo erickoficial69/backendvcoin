@@ -2,7 +2,8 @@
   "name": "server",
   "version": "1.2.0",
   "engines": {
-    "node": "12.13.0"
+    "node": "12.4.0",
+    "npm": "6.x"
   },
   "private": true,
   "dependencies": {
