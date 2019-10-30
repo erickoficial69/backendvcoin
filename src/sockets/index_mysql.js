@@ -117,6 +117,7 @@ const newOrder = async(pedido)=>{
         montoDeposito:pedido.montoDeposito,
         monedaDeposito:pedido.monedaDeposito,
         referenciaDeposito:pedido.referenciaDeposito,
+        referenciaRetiro:'',
         montoRetiro:pedido.montoRetiro,
         monedaRetiro:pedido.monedaRetiro,
         tazaCambio:pedido.tazaCambio,
