@@ -23,6 +23,7 @@
   },
   "scripts": {
     "start": "babel-node backend/index.js",
+      "postinstall":"npm run build",
     "dev": "nodemon src/index.js --exec babel-node",
     "build": "babel src --out-dir backend"
   },
