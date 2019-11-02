@@ -1,6 +1,9 @@
 const pool = require('../mysql/mysql') 
 const {Router} = require('express') 
 const nodemailer = require('nodemailer')
+/* const pdf = require('html-pdf'); */
+
+const invoice = require('../invoice/invoice') 
 
 const {join} = require('path')
 
@@ -22,9 +25,21 @@ router.get('/', async (rq, rs)=>{
     rs.json({status:'server is running'})
 })
 
+/* router.post('/test',async (rq,res)=>{
+    const parametros = rq.body
+    
+    pdf.create(invoice()).toFile(join(__dirname,'../invoice/invoice.pdf'), (err) => {
+        if(err) {
+            res.send(Promise.reject());
+        }
+        res.download(join(__dirname,'../invoice/invoice.pdf'));
+    });
+}) */
 
-
-
+router.get('/test',async (r,rs)=>{
+    res.download(join(__dirname,'../invoice/invoice.pdf'))
+    res.send('archivo generado')
+})
 router.post('/loginUser', async (rq, rs)=>{
     const {correo, password} = rq.body
    
@@ -33,8 +48,8 @@ router.post('/loginUser', async (rq, rs)=>{
         
         if(success[0].password !== password){
             return rs.json('contraseña incorrecta')
-        }else if(success[0].userStatus === 'no confirmado'){
-            rs.json('usuario no confirmado')
+        }else if(success[0].userStatus === 'no confirmado' || success[0].userStatus === 'suspendido'){
+            rs.json('usuario no confirmado o suspendido')
         }else{
             rs.json(success[0])
         }
@@ -54,27 +69,107 @@ router.get('/paises', async (rq, rs)=>{
     }      
     
 })
-//pedidos generales
-router.get('/pedidosg', async (rq, rs)=>{
-   
+//show all users 
+router.get('/getUsers',async(rq,rs)=>{
     try{
-        const rsPaises = await pool.query('select * from pedidos limit 10')
-         
-             rs.json(rsPaises)   
+        const users = await pool.query('select * from usuarios')
+        rs.json(users)
     }
-      catch(e){
-         console.log(e)
-      }       
-    
+    catch(e){
+        console.log()
+    }
+})
+//show one user 
+router.get('/getUser/:correo',async(rq,rs)=>{
+    const {correo} = rq.params
+    try{
+        const user = await pool.query(`select * from usuarios where concat(nombre,' ',dni,' ',apellido,' ',correo,' ',idUsuario) like '%${correo}%'`)
+        rs.json(user)
+    }
+    catch(e){
+        console.log()
+    }
+})
+router.get('/getOneUser/:correo',async(rq,rs)=>{
+    const {correo} = rq.params
+    try{
+        const user = await pool.query(`select * from usuarios where idUsuario = ${correo}`)
+        rs.json(user[0])
+    }
+    catch(e){
+        console.log()
+    }
+})
+router.post('/upgradeUser',async(rq,rs)=>{
+    const {rango,idUsuario} = rq.body
+    try{
+        const user = await pool.query(`update usuarios set? where idUsuario=?`,[{rango},idUsuario])
+        rs.json(user[0])
+    }
+    catch(e){
+        console.log()
+    }
+})
+router.post('/setStatusUser',async(rq,rs)=>{
+    const {userStatus,idUsuario} = rq.body
+    try{
+        const user = await pool.query(`update usuarios set? where idUsuario=?`,[{userStatus},idUsuario])
+        rs.json(user[0])
+    }
+    catch(e){
+        console.log()
+    }
 })
 //pedido unico
 router.post('/pedido', async (rq, rs)=>{
-   const correo = rq.body.correo
+   const id = rq.body.id
    
     try{
-        const rsPaises = await pool.query('select * from pedidos where correoRemitente = ?',[correo])
+        const data1 = await pool.query('select * from pedidos where idPedido = ?',[id])
          
-             rs.json(rsPaises)   
+         try{
+            const data2 = await pool.query('select * from cuentasbancarias where id = ?',[data1[0].idOperador])
+            
+            try{
+                const user = await pool.query('select * from usuarios where idUsuario = ?',[data1[0].idUsuario])
+                const dataFinal= {
+                    idPedido: data1[0].idPedido,
+                    montoDeposito: data1[0].montoDeposito,
+                    monedaDeposito: data1[0].monedaDeposito,
+                    montoRetiro: data1[0].montoRetiro,
+                    monedaRetiro: data1[0].monedaRetiro,
+                    tazaCambio: data1[0].tazaCambio,
+                    status: data1[0].status,
+                    fechaPedido: data1[0].fechaPedido,
+                    idUsuario: data1[0].idUsuario,
+                    idBanco: data1[0].idBanco,
+                    idOperador:data1[0].idOperador,
+                    nombreOperador: data1[0].nombreOperador,
+                    correoOperador: data1[0].correoOperador,
+                    referenciaDeposito: data1[0].referenciaDeposito,
+                    referenciaRetiro: data1[0].referenciaRetiro,
+                    fechaCompletada: data1[0].fechaCompletada,
+                    bancoVcoin:data2[0].banco,
+                    titularVcoin:data2[0].titular,
+                    dniTitularVcoin:data2[0].dniTitular,
+                    paisVcoin:data2[0].paisBanco,
+                    nacionalVcoin:data2[0].nacional,
+                    nCuentaVcoin:data2[0].numeroCuenta,
+                    tipoCuentaVcoin:data2[0].tipoCuenta,
+                    nombreUsuario:user[0].nombre+' '+user[0].apellido,
+                    correoUsuario:user[0].correo,
+                    dniUsuario:user[0].dni
+                    }
+                    console.log(user)
+                    rs.json(dataFinal)
+            }
+            catch(e){
+                console.log(e)
+            }
+         }
+         catch(e){
+            console.log(e)
+         }   
     }
       catch(e){
          console.log(e)
@@ -232,7 +327,7 @@ router.post('/newBankAcount', async(rq,rs)=>{
         banco,
         numeroCuenta,
         tipoCuenta,
-        idUsuario,
+        idTitular:idUsuario,
         titular,
         dniTitular,
         nacional
@@ -240,22 +335,21 @@ router.post('/newBankAcount', async(rq,rs)=>{
 
     try{
         await pool.query('insert into cuentasbancarias set ?', [datos])
-        
+        console.log(datos)
         rs.json({status:'ok'})
         return
     }
     catch(e){
-        
-        rs.json(e)
+        console.log(e)
     }
 })
 // get bank unique
 router.get('/bankAcounts/:usuario', async(rq,rs)=>{
     
     const idUsuario = rq.params.usuario
-console.log(idUsuario)
+
     try{
-        const success = await pool.query('select * from cuentasbancarias where idUsuario = ?', idUsuario)
+        const success = await pool.query('select * from cuentasbancarias where idTitular = ?', idUsuario)
        
        return rs.json(success)
     }
@@ -263,7 +357,8 @@ console.log(idUsuario)
         rs.json(e)
     }
 })
-//borrar banco
+
+//delete bank acount
 router.get('/deletebank/:id?', async (rq, rs)=>{
     const {id} = rq.params
     console.log(rq.params)
