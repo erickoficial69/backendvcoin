@@ -140,7 +140,8 @@ const newOrder = async(pedido)=>{
         idBanco:pedido.idBanco?pedido.idBanco:'por definir',
         idUsuario:pedido.idUsuario,
         fechaPedido:pedido.fechaPedido,
-        fechaCompletada:pedido.fechaCompletada    
+        fechaCompletada:pedido.fechaCompletada,
+        mensaje:''    
       }
         try{
             var mailCliente = {
