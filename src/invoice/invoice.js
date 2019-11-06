@@ -1,11 +1,11 @@
-module.exports = () => {
+module.exports = (pedido) => {
     
 return `
     <!doctype html>
     <html>
        <head>
           <meta charset="utf-8">
-          <title>PDF Result Template</title>
+          <title>N° factura: ${pedido.idPedido}</title>
           <style>
              .invoice-box {
              max-width: 800px;
@@ -88,7 +88,7 @@ return `
                          <tr>
                             <td class="title">aqyuí va una imagen</td>
                             <td>
-                               Datum: testeando
+                               ${Date()}
                             </td>
                          </tr>
                       </table>
@@ -99,10 +99,10 @@ return `
                       <table>
                          <tr>
                             <td>
-                               Customer name: test
+                               Customer name: ${pedido.nombreOperador?pedido.nombreOperador:'no definido'}
                             </td>
                             <td>
-                               Receipt number: test
+                               Receipt number: ${pedido.idPedido}
                             </td>
                          </tr>
                       </table>
@@ -110,15 +110,15 @@ return `
                 </tr>
                 <tr class="heading">
                    <td>Bought items:</td>
-                   <td>Price</td>
+                   <td>mont deposito:</td>
                 </tr>
                 <tr class="item">
-                   <td>First item:</td>
-                   <td>tets$</td>
+                   <td>${pedido.monedaDeposito}</td>
+                   <td>${pedido.montoDeposito}</td>
                 </tr>
                 <tr class="item">
-                   <td>Second item:</td>
-                   <td>test$</td>
+                <td>${pedido.monedaRetiro}</td>
+                <td>${pedido.montoRetiro}</td>
                 </tr>
              </table>
              <br />

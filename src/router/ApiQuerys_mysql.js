@@ -1,7 +1,7 @@
 const pool = require('../mysql/mysql') 
 const {Router} = require('express') 
 const nodemailer = require('nodemailer')
-/* const pdf = require('html-pdf'); */
+const pdf = require('html-pdf');
 
 const invoice = require('../invoice/invoice') 
 
@@ -25,20 +25,20 @@ router.get('/', async (rq, rs)=>{
     rs.json({status:'server is running'})
 })
 
-/* router.post('/test',async (rq,res)=>{
-    const parametros = rq.body
+router.post('/createpdf',async (rq,res)=>{
+    const pedido = rq.body
     
-    pdf.create(invoice()).toFile(join(__dirname,'../invoice/invoice.pdf'), (err) => {
+    pdf.create(invoice(pedido)).toFile(join(__dirname,`../invoice/invoice_${pedido.idPedido}.pdf`), (err) => {
         if(err) {
             res.send(Promise.reject());
         }
-        res.download(join(__dirname,'../invoice/invoice.pdf'));
+        res.send('ok');
     });
-}) */
+})
 
-router.get('/test',async (r,rs)=>{
-    res.download(join(__dirname,'../invoice/invoice.pdf'))
-    res.send('archivo generado')
+router.get('/getpdf/:idPedido',async (rq,rs)=>{
+    const {idPedido} = rq.params
+    rs.sendFile(join(__dirname,`../invoice/invoice_${idPedido}.pdf`))
 })
 router.post('/loginUser', async (rq, rs)=>{
     const {correo, password} = rq.body
@@ -47,13 +47,21 @@ router.post('/loginUser', async (rq, rs)=>{
         const success = await pool.query('select * from usuarios where correo = ?', [correo])
         
         if(success[0].password !== password){
-            return rs.json('contraseña incorrecta')
-        }else if(success[0].userStatus === 'no confirmado' || success[0].userStatus === 'suspendido'){
-            rs.json('usuario no confirmado o suspendido')
-        }else{
-            rs.json(success[0])
+            rs.json('contraseña incorrecta')
+            return 
         }
-       return
+
+        if(success[0].userStatus === 'no confirmado'){
+            rs.json('usuario no confirmado')
+            return 
+        }
+
+        if(success[0].userStatus === 'suspendido'){
+            rs.json('usuario suspendido')
+            return 
+        }
+        rs.json(success[0])
+        return
     }catch(e){
         rs.json('fail')
     }
@@ -128,7 +136,7 @@ router.post('/pedido', async (rq, rs)=>{
         const data1 = await pool.query('select * from pedidos where idPedido = ?',[id])
          
          try{
-            const data2 = await pool.query('select * from cuentasbancarias where id = ?',[data1[0].idOperador])
+            const data2 = await pool.query('select * from cuentasbancarias where idTitular = ?',[data1[0].idOperador?data1[0].idOperador:data1[0].idUsuario])
             
             try{
                 const user = await pool.query('select * from usuarios where idUsuario = ?',[data1[0].idUsuario])
@@ -149,7 +157,7 @@ router.post('/pedido', async (rq, rs)=>{
                     referenciaDeposito: data1[0].referenciaDeposito,
                     referenciaRetiro: data1[0].referenciaRetiro,
                     fechaCompletada: data1[0].fechaCompletada,
-                    bancoVcoin:data2[0].banco,
+                    bancoVcoin:data2[0].banco?data2[0].banco:'',
                     titularVcoin:data2[0].titular,
                     dniTitularVcoin:data2[0].dniTitular,
                     paisVcoin:data2[0].paisBanco,
@@ -160,7 +168,6 @@ router.post('/pedido', async (rq, rs)=>{
                     correoUsuario:user[0].correo,
                     dniUsuario:user[0].dni
                     }
-                    console.log(user)
                     rs.json(dataFinal)
             }
             catch(e){
@@ -335,7 +342,7 @@ router.post('/newBankAcount', async(rq,rs)=>{
 
     try{
         await pool.query('insert into cuentasbancarias set ?', [datos])
-        console.log(datos)
+        
         rs.json({status:'ok'})
         return
     }
@@ -344,24 +351,52 @@ router.post('/newBankAcount', async(rq,rs)=>{
     }
 })
 // get bank unique
-router.get('/bankAcounts/:usuario', async(rq,rs)=>{
+router.get('/bankAcounts/:usuario?', async(rq,rs)=>{
     
     const idUsuario = rq.params.usuario
 
     try{
         const success = await pool.query('select * from cuentasbancarias where idTitular = ?', idUsuario)
-       
+      
        return rs.json(success)
     }
     catch(e){
         rs.json(e)
     }
 })
+// get bank unique by id
+router.get('/bank/:id?', async(rq,rs)=>{
+    
+    const id = rq.params.id
 
+    try{
+        const success = await pool.query('select * from cuentasbancarias where id =?', id)
+      console.log(success)
+       return rs.json(success[0])
+    }
+    catch(e){
+        rs.json(e)
+    }
+})
+// get bank from pedido for country
+router.get('/bankAcountCountry/:usuario?/:pais?', async(rq,rs)=>{
+    
+    const idUsuario = rq.params.usuario
+    const pais = rq.params.pais
+    console.log(idUsuario, pais)
+    try{
+        const success = await pool.query(`select * from cuentasbancarias where idTitular='1' and paisBanco ='${pais}'`)
+        console.log(success)
+       return rs.json(success)
+    }
+    catch(e){
+        console.log(e)
+        rs.json(e)
+    }
+})
 //delete bank acount
 router.get('/deletebank/:id?', async (rq, rs)=>{
     const {id} = rq.params
-    console.log(rq.params)
      try{
             await pool.query('delete from cuentasbancarias where id = ?', [id])
           
@@ -394,7 +429,6 @@ router.get('/datapais/:name?', async (rq, rs)=>{
    const {name} = rq.params
     try{
         const img = await pool.query('select * from imgpaises where nombre =?',name)
-        console.log(img[0])
         rs.json(img)
     }catch(e){
         console.log(e)
@@ -402,9 +436,14 @@ router.get('/datapais/:name?', async (rq, rs)=>{
     }      
     
 })
-router.get('/test', async(rq,rs)=>{
-    
-    rs.sendFile(join(__dirname,'./test.js'))
-    console.log(__dirname,'./test.js')
+
+router.post('/savemessage',async(rq,rs)=>{
+    try{
+        const message = await pool.query('insert into mensajes set?',[rq.body])
+        rs.send('mensaje enviado')
+    }
+    catch(e){
+        rs.send('error')
+    }
 })
 module.exports = router

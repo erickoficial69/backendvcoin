@@ -14,7 +14,7 @@ const pool = mysql.createPool({
     user:'uh0f7khjnicpyoha',
     password:'GRfj2F8gwxOGqNQUirSh',
     host:'bve6dsbfjomqknxl1zt3-mysql.services.clever-cloud.com',
-    connectionLimit:1
+    connectionLimit:3
 })
 
 pool.getConnection((err, connection)=>{

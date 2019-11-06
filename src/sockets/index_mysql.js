@@ -15,6 +15,7 @@ var smtpTransport = nodemailer.createTransport(smtpConfig);
 
 
 module.exports = ws =>{
+    //eventos sockets
     ws.on('connection', ws =>{
         ws.on('pedidos',data=>{
             pedidos_clientes(data)
@@ -23,11 +24,17 @@ module.exports = ws =>{
         ws.on('pedidosGenerales', dataLimit=>{
             pedidosGenerales(dataLimit)
         })
-        
-
+        ws.on('rqMessage',data=>{
+            messages(data)
+        })
+        ws.on('updateMessage',data=>{
+            updateMessage(data)
+        })
         dolarPaises()
         dolarVzla()
-        
+        ws.on('deleteMessage',data=>{
+            deleteMessage(data)
+        })
         ws.on('newPedido', pedido =>{
             newOrder(pedido)
         })
@@ -35,9 +42,7 @@ module.exports = ws =>{
         ws.on('newPais', data =>{
             newPais(data)
         })
-        ws.on('notificacionToOperador',id=>{
-            console.log(id)
-        })
+       
         ws.on('updatePais', data =>{
             updatePais(data)
         })
@@ -50,8 +55,12 @@ module.exports = ws =>{
         ws.on('updatePedido', pedido =>{
             updatePedido(pedido)
         })
+        ws.on('deletePedido',data=>{
+            deletePedido(data)
+        })
+        //cierre de eventos sockets
     })
-
+//funciones de sockets
 const notificacionPedido = async(data)=>{
     ws.emit('notificacionPedido',data)
 }
@@ -95,7 +104,7 @@ const pedidos_clientes = async (data)=>{
         try{
             const rsPedidos = await pool.query(`select pedidos.*, usuarios.*, cuentasbancarias.* from pedidos inner join usuarios on usuarios.idUsuario = pedidos.idUsuario inner join cuentasbancarias on cuentasbancarias.id = pedidos.idBanco where pedidos.idUsuario = ${data.idUsuario} order by idPedido desc limit ${limit}`)
             ws.emit(data.idUsuario,rsPedidos) 
-            console.log(rsPedidos)
+            
         }
         catch(e){
            console.log(e)
@@ -276,6 +285,7 @@ const updatePedido = async(data)=>{
                 pedidosGenerales()
                 pedidos_clientes(data)
                 notificacionToOperador(mensajeToOperador)
+                ws.emit('updatePedido','ok')
             }
             catch(e){
                 console.log(e)
@@ -327,7 +337,7 @@ const updatePedidoAdm = async(data)=>{
                     notificacionToOperador(mensajeToOperador)
                     pedidosGenerales()
                     pedidos_clientes(data)
-                    
+                    ws.emit('updatePedidoAdm','ok')
                 }
                 catch(e){
                     console.log(e)
@@ -361,6 +371,30 @@ const updatePedidoAdm = async(data)=>{
         }
         
         } 
+const deletePedido = async(data)=>{
+     
+                 const datos ={
+                     status:data.status,
+                     mensaje:data.mensaje
+                 }
+                 const mensaje ={
+                     titulo:`${data.nombreUsuario}`,
+                     body:data.mensaje,
+                     usuario:data.idUsuario
+                 }
+                 try{
+                        
+                     await pool.query('UPDATE pedidos SET ? where idPedido = ?', [datos,data.idPedido])
+                     notificacionPedido(mensaje)
+                     pedidosGenerales()
+                     pedidos_clientes(data)
+                     ws.emit('deletePedido','cancelada')
+                 }
+                 catch(e){
+                     console.log(e)
+                 }
+        }
+             
 const newPais = async(data)=>{
     const mensaje ={
         titulo:`VcoinTransfer dice:`,
@@ -369,7 +403,7 @@ const newPais = async(data)=>{
     }
     try{
         const verifyPais = await pool.query(`select * from paises where nombre = ?`,data.nombre)
-        console.log(verifyPais)
+        
         if(verifyPais[0]===undefined){
             const mensaje ={
                 titulo:`VcoinTransfer dice:`,
@@ -435,4 +469,38 @@ const deletePais = async(data)=>{
         ws.emit('deletePais',data)
    }
 }
+
+const messages = async (data)=>{
+    console.log(data)
+    try{
+        const message = await pool.query(`select * from mensajes where idDestinatario='${data.idUsuario}' order by id desc`)
+        ws.emit(data.correo,message)
+    }
+    catch(e){
+        ws.emit('messages',e)
+    }
+}
+
+const updateMessage = async (data)=>{
+    const status ={
+        mensajeStatus:data.mensajeStatus
+    }
+    try{
+        await pool.query('update mensajes set? where idDestinatario =?',[status,data.idUsuario])
+        messages(data)
+    }
+    catch(e){
+        ws.emit('messages',e)
+    }
+}
+const deleteMessage = async (data)=>{
+    try{
+        await pool.query('delete from mensajes where idDestinatario =?',[data.idUsuario])
+        messages(data)
+    }
+    catch(e){
+        ws.emit('messages',e)
+    }
+}
+//cierre de funcciones sockets
 }
