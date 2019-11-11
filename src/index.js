@@ -1,7 +1,7 @@
 //import express server with http module
 const cors = require('cors') 
 const express = require('express') 
-const {join} = require('path') 
+const {join, extname} = require('path') 
 
 const morgan = require('morgan') 
 
@@ -9,7 +9,6 @@ const app = express()
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
-app.use(express.urlencoded({extended:false}))
 
 
 app.set('port', process.env.PORT || 4000)
@@ -18,9 +17,13 @@ const io = require('socket.io')
 
 const pushEvents = require('./router/push-events') 
 const apiQuerys = require('./router/ApiQuerys_mysql') 
+const uploads = require('./router/uploadsRoutes') 
 //router
 app.use(pushEvents)
 app.use(apiQuerys)
+app.use(uploads)
+//update photo
+
 //static files 
 app.use(express.static(join(__dirname, './build/')))
 

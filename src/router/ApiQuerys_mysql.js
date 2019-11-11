@@ -2,10 +2,11 @@ const pool = require('../mysql/mysql')
 const {Router} = require('express') 
 const nodemailer = require('nodemailer')
 const pdf = require('html-pdf');
+const {join} = require('path')
 
 const invoice = require('../invoice/invoice') 
 
-const {join} = require('path')
+
 
 var smtpConfig = {
     host: 'smtp.gmail.com',
@@ -22,7 +23,8 @@ var smtpTransport = nodemailer.createTransport(smtpConfig);
 const router = Router()
 
 router.get('/', async (rq, rs)=>{
-    rs.json({status:'server is running'})
+    
+    rs.send('server ok')
 })
 
 router.post('/createpdf',async (rq,res)=>{
@@ -87,25 +89,27 @@ router.get('/getUsers',async(rq,rs)=>{
         console.log()
     }
 })
-//show one user 
+
+// show one user 
 router.get('/getUser/:correo',async(rq,rs)=>{
-    const {correo} = rq.params
-    try{
-        const user = await pool.query(`select * from usuarios where concat(nombre,' ',dni,' ',apellido,' ',correo,' ',idUsuario) like '%${correo}%'`)
-        rs.json(user)
-    }
+     const {correo} = rq.params
+     try{
+         const user = await pool.query(`select * from usuarios where concat(nombre,' ',dnir,' ',apellido,' ',correo,' ',idUsuario,' ',rango) like '%${correo}%'`)
+         rs.json(user)
+     }
     catch(e){
-        console.log()
-    }
-})
-router.get('/getOneUser/:correo',async(rq,rs)=>{
-    const {correo} = rq.params
+        console.log(e)
+     }
+ })
+ 
+router.get('/getOneUser/:id',async(rq,rs)=>{
+    const {id} = rq.params
     try{
-        const user = await pool.query(`select * from usuarios where idUsuario = ${correo}`)
+        const user = await pool.query(`select * from usuarios where idUsuario = ${id}`)
         rs.json(user[0])
     }
     catch(e){
-        console.log()
+        console.log(e)
     }
 })
 router.post('/upgradeUser',async(rq,rs)=>{
@@ -134,12 +138,9 @@ router.post('/pedido', async (rq, rs)=>{
    
     try{
         const data1 = await pool.query('select * from pedidos where idPedido = ?',[id])
-         
-         try{
-            const data2 = await pool.query('select * from cuentasbancarias where idTitular = ?',[data1[0].idOperador?data1[0].idOperador:data1[0].idUsuario])
+        const data2 = await pool.query('select * from cuentasbancarias where id = ?',[data1[0].idBanco])
             
-            try{
-                const user = await pool.query('select * from usuarios where idUsuario = ?',[data1[0].idUsuario])
+        const user = await pool.query('select * from usuarios where idUsuario = ?',[data1[0].idUsuario])
                 const dataFinal= {
                     idPedido: data1[0].idPedido,
                     montoDeposito: data1[0].montoDeposito,
@@ -169,14 +170,7 @@ router.post('/pedido', async (rq, rs)=>{
                     dniUsuario:user[0].dni
                     }
                     rs.json(dataFinal)
-            }
-            catch(e){
-                console.log(e)
-            }
-         }
-         catch(e){
-            console.log(e)
-         }   
+            
     }
       catch(e){
          console.log(e)
@@ -184,26 +178,12 @@ router.post('/pedido', async (rq, rs)=>{
     
 })
 
-//borrar pedido
-router.post('/delete', async (rq, rs)=>{
-    const id = rq.body.id
-    
-     try{
-         const rsPaises = await pool.query('delete from pedidos where id = ?', [id])
-          
-              rs.json('borrado exitoso')   
-     }
-       catch(e){
-          console.log(e)
-       }       
-     
- })
 
 //registe user
 router.post('/registerUser', async(rq,rs)=>{
     
 
-    const {nombre,apellido,correo,password, fechaIncripcion,userPaisOrigen,dni} = rq.body
+    const {nombre,apellido,correo,password, fechaIncripcion,pais,dni,idOperador,userStatus,telefono} = rq.body
     const newUser ={
         nombre,
         apellido,
@@ -211,9 +191,11 @@ router.post('/registerUser', async(rq,rs)=>{
         password,
         fechaIncripcion,
         token:Date.now(),
-        userPaisOrigen,
-        userPaisActual:'',
-        dni
+        pais,
+        dni,
+        idOperador,
+        userStatus,
+        telefono
     }
     var mailOptions = {
         from: 'Pruebasvcointransfer@gmail.com',
@@ -295,13 +277,62 @@ router.get('/confirm/:token?/:correo?/:status?', async(rq,rs)=>{
     const {correo,status} = rq.params
     try{
         await pool.query('update usuarios set ? where correo =?',[{userStatus:status},correo])
-        rs.redirect('https://vcointransfer.erickoficial69.now.sh/')
+        rs.redirect('http://vcointransfers.com/')
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+//get Phone
+router.post('/phoneNumberByUser/', async(rq,rs)=>{
+    try{
+        const phone = await pool.query('select * from telefonos',[rq.body])
+        rs.json(phone)
     }
     catch(err){
         console.log(err)
     }
 })
 
+router.post('/updatePhoneNumber', async(rq,rs)=>{
+    const newData ={
+        numero:rq.body.numero
+    }
+    try{
+        await pool.query('update telefonos set? where id =?',[newData,rq.body.id])
+        rs.json({update:'ok'})
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+//update profile
+router.post('/updateProfile', async(rq,rs)=>{
+    const newData ={
+        nombre:rq.body.nombre,
+        apellido:rq.body.apellido,
+        password:rq.body.password,
+    }
+    try{
+        await pool.query('update usuarios set? where idUsuario =?',[newData,rq.body.idUsuario])
+        rs.json({update:'ok'})
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+router.post('/updatePhoto', async (rq,rs)=>{
+    const foto ={
+        foto:rq.body.foto
+    }
+    try{
+        await pool.query(`update usuarios set ? where idUsuario =?`,[foto,rq.body.idUsuario])
+        rs.send('ok')
+    }
+    catch(e){
+        console.log(e)
+    }
+})
 //mail verify
 router.post('/mailVerify', async(rq,rs)=>{
     
@@ -383,10 +414,8 @@ router.get('/bankAcountCountry/:usuario?/:pais?', async(rq,rs)=>{
     
     const idUsuario = rq.params.usuario
     const pais = rq.params.pais
-    console.log(idUsuario, pais)
     try{
         const success = await pool.query(`select * from cuentasbancarias where idTitular='1' and paisBanco ='${pais}'`)
-        console.log(success)
        return rs.json(success)
     }
     catch(e){
@@ -439,7 +468,7 @@ router.get('/datapais/:name?', async (rq, rs)=>{
 
 router.post('/savemessage',async(rq,rs)=>{
     try{
-        const message = await pool.query('insert into mensajes set?',[rq.body])
+        await pool.query('insert into mensajes set?',[rq.body])
         rs.send('mensaje enviado')
     }
     catch(e){

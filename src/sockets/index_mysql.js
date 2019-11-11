@@ -58,6 +58,12 @@ module.exports = ws =>{
         ws.on('deletePedido',data=>{
             deletePedido(data)
         })
+        ws.on('newComent',data=>{
+            newComent(data)
+        })
+       
+        coments()
+        
         //cierre de eventos sockets
     })
 //funciones de sockets
@@ -100,11 +106,10 @@ const dolarVzla = async ()=>{
     
         }
 const pedidos_clientes = async (data)=>{
-    let limit = await  data.limit ? data.limit : 20
+    let limit = await  data.limit ? data.limit : 31
         try{
             const rsPedidos = await pool.query(`select pedidos.*, usuarios.*, cuentasbancarias.* from pedidos inner join usuarios on usuarios.idUsuario = pedidos.idUsuario inner join cuentasbancarias on cuentasbancarias.id = pedidos.idBanco where pedidos.idUsuario = ${data.idUsuario} order by idPedido desc limit ${limit}`)
-            ws.emit(data.idUsuario,rsPedidos) 
-            
+            ws.emit(data.idUsuario,rsPedidos)
         }
         catch(e){
            console.log(e)
@@ -119,7 +124,7 @@ const pedidos_clientes = async (data)=>{
 
     } 
 const pedidosGenerales = async(dataLimit)=>{
-    let limit = await  dataLimit ? dataLimit : 20
+    let limit = await  dataLimit ? dataLimit : 31
     try{
         const pedido = await pool.query(`select pedidos.*, usuarios.*, cuentasbancarias.* from pedidos inner join usuarios on usuarios.idUsuario = pedidos.idUsuario inner join cuentasbancarias on cuentasbancarias.id = pedidos.idBanco order by idPedido desc limit ${limit}`)
         
@@ -129,28 +134,36 @@ const pedidosGenerales = async(dataLimit)=>{
     }
 }        
 const newOrder = async(pedido)=>{
-    const datosPedido = {
-        montoDeposito:pedido.montoDeposito,
-        monedaDeposito:pedido.monedaDeposito,
-        referenciaDeposito:pedido.referenciaDeposito,
-        referenciaRetiro:'',
-        montoRetiro:pedido.montoRetiro,
-        monedaRetiro:pedido.monedaRetiro,
-        tazaCambio:pedido.tazaCambio,
-        idBanco:pedido.idBanco?pedido.idBanco:'por definir',
-        idUsuario:pedido.idUsuario,
-        fechaPedido:pedido.fechaPedido,
-        fechaCompletada:pedido.fechaCompletada,
-        mensaje:''    
-      }
+    
         try{
-            var mailCliente = {
+            
+            const usuario = await pool.query(`select idOperador,nombre,correo from usuarios where idUsuario = ${pedido.idUsuario}`)
+            const dataOperador = await pool.query(`select nombre,correo from usuarios where idUsuario = ${usuario[0].idOperador}`)
+
+            const datosPedido = {
+                montoDeposito:pedido.montoDeposito,
+                monedaDeposito:pedido.monedaDeposito,
+                referenciaDeposito:pedido.referenciaDeposito,
+                referenciaRetiro:'',
+                montoRetiro:pedido.montoRetiro,
+                monedaRetiro:pedido.monedaRetiro,
+                tazaCambio:pedido.tazaCambio,
+                idBanco:pedido.idBanco?pedido.idBanco:0,
+                idUsuario:pedido.idUsuario,
+                fechaPedido:pedido.fechaPedido,
+                fechaCompletada:pedido.fechaCompletada,
+                idOperador:usuario[0].idOperador,
+                nombreOperador:dataOperador[0].nombre,
+                correoOperador:dataOperador[0].correo,
+                mensaje:''    
+              }
+              var mailCliente = {
                 from: 'Pruebasvcointransfer@gmail.com',
-                to: `${pedido.correoUsuario}`, 
+                to: `${usuario[0].correo}`, 
                 subject:'Nuevo pedido',
                 html: `
                     <div>
-                        <h1>Saludos ${pedido.nombreUsuario}</h1>
+                        <h1>Saludos ${usuario[0].nombre}</h1>
                         <p>Tu solicitud fue enviada a red Vcoin Transfer</p>
                         <strong>Deposito:</strong>${pedido.montoDeposito} ${pedido.monedaRetiro}
                         <strong>Retiro:</strong>${pedido.montoRetiro} ${pedido.monedaDeposito}
@@ -164,7 +177,7 @@ const newOrder = async(pedido)=>{
                 html: `
                     <div>
                         <h1>Saludos, tienes un nuevo encargo</h1>
-                        <p>Cliente: ${pedido.nombreUsuario} ${pedido.correoUsuario}</p>
+                        <p>Cliente: ${usuario[0].nombre} ${usuario[0].correo}</p>
                         <strong>Deposito:</strong>${pedido.montoDeposito} ${pedido.monedaRetiro}
                         <strong>Retiro:</strong>${pedido.montoRetiro} ${pedido.monedaDeposito}
                     </div>
@@ -198,204 +211,102 @@ const newOrder = async(pedido)=>{
     }
 
 const updatePedido = async(data)=>{
-    /*Recibe por parametro
-            idPedido,status,nombreUsuario,correoUsuario,idBanco,idUsuario,nombreOperador,correoOperador */
-    
-    if(data.referenciaDeposito === undefined){
+        
+    try{
+        const cliente = await pool.query(`select nombre,apellido,correo,rango from usuarios where idUsuario = ${data.idUsuario}`)
 
-        const datos ={
-            idPedido: data.idPedido,
-            status:data.status,
-            idUsuario: data.idUsuario,
-            idOperador: data.idOperador,
-            nombreOperador: data.nombreOperador,
-            correoOperador:data.correoOperador
-    }
-    const mensajeToOperador ={
+       const mensajeToOperador ={
         titulo:`Han habido cambios`,
-        body:`El usuario ${data.nombreUsuario} actualizó el pedido: ${data.idPedido} a: ${data.status}`,
-        usuario:data.idUsuario,
+        body:`El usuario${cliente[0].nombre}  ${cliente[0].apellido} actualizó el pedido: ${data.idPedido} a: ${data.status}`,
         operador:data.idOperador
     }
-
-       try{
-        var mailCliente = {
-            from: 'Pruebasvcointransfer@gmail.com',
-            to: `${data.correoUsuario}`, 
-            subject:'Nuevo data',
-            html: `
-                <div>
-                    <h1>Saludos ${data.nombreUsuario}</h1>
-                    <p>Tu solicitud fue:${data.status} por el operador: ${data.nombreOperador}</p>
-                </div>
-            `
-        }
-            await pool.query('UPDATE pedidos SET ? where idPedido = ?', [datos,data.idPedido])
-            notificacionToOperador(mensajeToOperador)
-            pedidosGenerales()
-            pedidos_clientes(data)
-
-            smtpTransport.sendMail(mailCliente, function(error, response){
-                if(error){
-                    console.log(error);
-                }else{
-                    console.log('ok')
-                    }
-                });
-        }
+       const datos ={
+        status:data.status,
+        referenciaDeposito:data.referenciaDeposito,
+        idBanco:data.idBanco
+    }
+        await pool.query('UPDATE pedidos SET ? where idPedido = ?', [datos,data.idPedido])
+        ws.emit('updatePedido','ok')
+        notificacionToOperador(mensajeToOperador)
+        pedidosGenerales()
+        pedidos_clientes(data)
+    }
         catch(e){
             console.log(e)
         }
-        return
-    }
-    
-    if(data.referenciaDeposito!==undefined){
-        
-        /*nuevos parametros 
-        idBancoOld,
-            statusOld
-            montoDeposito,
-            monedaDeposito,
-            montoRetiro,
-            monedaRetiro,
-            tazaCambio,
-            fechaPedido,
-            
-            bancoVcoin,
-            titularVcoin,
-            dniTitularVcoin,
-            paisVcoin,
-            nacionalVcoin,
-            nCuentaVcoin,
-            tipoCuentaVcoin  */
-        const datos={
-            referenciaDeposito:data.referenciaDeposito,
-            status:data.status,
-            idBanco:data.idBanco
-        }
-        
-        const mensajeToOperador ={
-            titulo:`Han habido cambios`,
-            body:`El usuario ${data.nombreUsuario} actualizó el pedido: ${data.idPedido} a: ${data.status}`,
-            usuario:data.idUsuario,
-            operador:data.idOperador
-        }
-        
-           try{
-                await pool.query('UPDATE pedidos SET ? where idPedido = ?', [datos,data.idPedido])
-                pedidosGenerales()
-                pedidos_clientes(data)
-                notificacionToOperador(mensajeToOperador)
-                ws.emit('updatePedido','ok')
-            }
-            catch(e){
-                console.log(e)
-                ws.emit('updatePedido','hubo un error')
-            }
-            return
-    }
-    
     } 
 const updatePedidoAdm = async(data)=>{
-       /*nuevos parametros 
-        idBancoOld,
-            statusOld
-            montoDeposito,
-            monedaDeposito,
-            montoRetiro,
-            monedaRetiro,
-            tazaCambio,
-            fechaPedido,
-            
-            bancoVcoin,
-            titularVcoin,
-            dniTitularVcoin,
-            paisVcoin,
-            nacionalVcoin,
-            nCuentaVcoin,
-            tipoCuentaVcoin  */
-        if(data.referenciaRetiro!==undefined){
-            
-            const datos={
-                referenciaRetiro:data.referenciaRetiro,
-                status:data.status
-            }
-            const mensaje ={
-                titulo:`${data.nombreUsuario} Pedido actualizado`,
-                body:`Pedido id: ${data.idPedido} fue ${data.status} por ${data.nombreOperador}`,
-                usuario:data.idUsuario
-            }
-            const mensajeToOperador ={
-                titulo:`Han habido cambios`,
-                body:`Se actualizó el pedido: ${data.idPedido} a: ${data.status} para el cliente ${data.nombreUsuario}`,
-                usuario:data.idUsuario,
-                operador:data.idOperador
-            }
-               try{
-                   
-                    await pool.query('UPDATE pedidos SET ? where idPedido = ?', [datos,data.idPedido])
-                    notificacionPedido(mensaje)
-                    notificacionToOperador(mensajeToOperador)
-                    pedidosGenerales()
-                    pedidos_clientes(data)
-                    ws.emit('updatePedidoAdm','ok')
-                }
-                catch(e){
-                    console.log(e)
-                }
-                return
-            }
 
-        if(data.referenciaRetiro===undefined){
-            console.log(data)
-            const datos ={
-                idOperador:data.idOperador,
-                nombreOperador:data.nombreOperador,
-                correoOperador:data.correoOperador,
-                status:data.status
-            }
-            const mensaje ={
-                titulo:`${data.nombreUsuario}`,
-                body:`Pedido ${data.idPedido} fue ${data.status} por ${datos.nombreOperador}`,
-                usuario:data.idUsuario
-            }
             try{
-                   
+                const pedido = await pool.query(`select * from pedidos where idPedido= ${data.idPedido}`)
+
+                const cliente = await pool.query(`select nombre,apellido,correo,rango from usuarios where idUsuario = ${pedido[0].idUsuario}`)
+
+                const operador = await pool.query(`select nombre,apellido,rango from usuarios where idUsuario = ${pedido[0].idOperador}`)
+
+                const mensaje ={
+                   titulo:`${cliente[0].nombre}  ${cliente[0].apellido}`,
+                   body:`pedido aprobado por ${pedido[0].nombreOperador}`,
+                   usuario:pedido[0].idUsuario
+               } 
+               const mensajeToOperador ={
+                titulo:`Han habido cambios`,
+                body:`El pedido: ${data.idPedido} se actualizó a: ${data.status}`,
+                operador:pedido[0].idOperador
+            }
+               const datos ={
+                status:data.status,
+                referenciaDeposito:pedido[0].referenciaDeposito,
+                referenciaRetiro:data.referenciaRetiro
+            }
                 await pool.query('UPDATE pedidos SET ? where idPedido = ?', [datos,data.idPedido])
                 notificacionPedido(mensaje)
+                notificacionToOperador(mensajeToOperador)
                 pedidosGenerales()
-                pedidos_clientes(data)
+                pedidos_clientes(pedido[0])
+                ws.emit('updatePedidoAdm','ok')
             }
             catch(e){
                 console.log(e)
             }
-        }
         
-        } 
+    } 
 const deletePedido = async(data)=>{
      
                  const datos ={
                      status:data.status,
                      mensaje:data.mensaje
                  }
-                 const mensaje ={
-                     titulo:`${data.nombreUsuario}`,
-                     body:data.mensaje,
-                     usuario:data.idUsuario
-                 }
+                 
                  try{
-                        
+                     const pedido = await pool.query(`select idOperador,idUsuario,correoOperador,nombreOperador from pedidos where idPedido= ${data.idPedido}`)
+
+                     const cliente = await pool.query(`select nombre,apellido,correo from usuarios where idUsuario = ${pedido[0].idUsuario}`)
+
+                     const operador = await pool.query(`select nombre,apellido from usuarios where idUsuario = ${pedido[0].idUsuario}`)
+
+                     const mensaje ={
+                        titulo:`${cliente[0].nombre}  ${cliente[0].apellido}`,
+                        body:data.mensaje,
+                        usuario:pedido[0].idUsuario
+                    } 
+                    const mensajeToOperador ={
+                        titulo:`Han habido cambios`,
+                        body:data.mensaje,
+                        usuario:pedido[0].idUsuario,
+                        operador:pedido[0].idUsuario
+                    }
                      await pool.query('UPDATE pedidos SET ? where idPedido = ?', [datos,data.idPedido])
                      notificacionPedido(mensaje)
+                     notificacionToOperador(mensajeToOperador)
                      pedidosGenerales()
-                     pedidos_clientes(data)
+                     pedidos_clientes(pedido[0])
                      ws.emit('deletePedido','cancelada')
                  }
                  catch(e){
                      console.log(e)
                  }
-        }
-             
+        }           
 const newPais = async(data)=>{
     const mensaje ={
         titulo:`VcoinTransfer dice:`,
@@ -415,6 +326,7 @@ const newPais = async(data)=>{
                 await pool.query(`insert into paises set ?`, [data])
                 dolarPaises()
                 ws.emit('notificacionNoticias',mensaje)
+                ws.emit('newPais','ok')
             }
             catch(e){
                 const mensaje ={
@@ -440,15 +352,17 @@ const newPais = async(data)=>{
 }
 const updatePais = async(data)=>{
         const {id,tazaCambio} = data
-        const mensaje ={
-            titulo:`VcoinTransfer dice:`,
-            body:`La taza a Variado`,
-            usuario:data.idUsuario
-        }
-        
         try{
+            const pais = await pool.query('select * from paises WHERE id = ?',[id])
+            
+            const mensaje ={
+                        titulo:`VcoinTransfer dice:`,
+                        body:`La taza a Variado en ${pais[0].moneda}`
+                    }
+
             await pool.query('UPDATE paises SET ? WHERE id = ?',[{tazaCambio},id])
             dolarPaises()
+            ws.emit('updatePais','ok')
             ws.emit('notificacionNoticias',mensaje)
         }
         catch(e){
@@ -456,14 +370,16 @@ const updatePais = async(data)=>{
         }
     }
 const deletePais = async(data)=>{
-    const mensaje ={
-        titulo:`VcoinTransfer dice:`,
-        body:`Elemendo id: ${data} eliminado`,
-        usuario:data.idUsuario
-    }
-    try{
+    try{ 
+        const pais = await pool.query('select * from paises WHERE id = ?',[data])
+        const mensaje ={
+            titulo:`VcoinTransfer dice:`,
+            body:`Se eliminó ${pais[0].moneda}`
+        }
+
         await pool.query(`delete from paises where id = ${data}`)
         dolarPaises()
+        
         ws.emit('deletePais',mensaje)
     }
    catch(e){
@@ -502,6 +418,27 @@ const deleteMessage = async (data)=>{
     catch(e){
         ws.emit('messages',e)
     }
+}
+const newComent = async(data)=>{
+    try{
+        await pool.query(`insert into resenas set ?`,[data])
+        ws.emit('newComent','reseña exitosa')
+        coments()
+    }
+    catch(e){
+        ws.emit('newComent','error')
+    }
+    
+}
+const coments = async()=>{
+    try{
+        const coments = await pool.query(`select * from resenas order by id desc`)
+        ws.emit('coments',coments)
+    }
+    catch(e){
+        ws.emit('coments','error')
+    }
+    
 }
 //cierre de funcciones sockets
 }
