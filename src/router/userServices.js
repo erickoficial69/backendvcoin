@@ -172,10 +172,33 @@ router.post('/recoverpass', async(rq,rs)=>{
                     text-transform: uppercase;
                     padding: 10px 25px; 
                     border-radius: 7px;
-                            " href="http://vcointransfers.com/${user[0].token}">Cambiar contraseña</a>
+                            " href="https://vcointransfers.com/UpdatePass/${user[0].token}">Cambiar contraseña</a>
                 </div>
             `
         }
+
+        smtpTransport.sendMail(mailOptions, function(error, response){
+            if(error){
+                console.log(error);
+            }else{
+                console.log('ok')
+                }
+            });
+            rs.send('revise su correo')
+    }catch(e){
+        rs.json(e)
+        console.log(e)
+    }
+})
+
+//recover pass
+router.post('/updatepass', async(rq,rs)=>{
+    
+
+   return console.log(rq.body)
+    try{
+        const user = await pool.query('select token from usuarios where correo =?', [correo])
+
 
         smtpTransport.sendMail(mailOptions, function(error, response){
             if(error){
