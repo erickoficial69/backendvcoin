@@ -17,11 +17,11 @@ const io = require('socket.io')
 
 const pushEvents = require('./router/push-events') 
 const apiQuerys = require('./router/ApiQuerys_mysql') 
-const uploads = require('./router/uploadsRoutes') 
+const userServices = require('./router/userServices') 
 //router
 app.use(pushEvents)
 app.use(apiQuerys)
-app.use(uploads)
+app.use(userServices)
 //update photo
 
 //static files 

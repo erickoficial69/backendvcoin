@@ -24,7 +24,7 @@ const router = Router()
 
 router.get('/', async (rq, rs)=>{
     
-    rs.send('server ok')
+    rs.send('ok')
 })
 
 router.post('/createpdf',async (rq,res)=>{
@@ -251,7 +251,7 @@ router.post('/registerUser', async(rq,rs)=>{
                 text-transform: uppercase;
                 padding: 10px 25px; 
                 border-radius: 7px;
-                        " href="https://backendvcoin.herokuapp.com/confirm/${newUser.token}/${correo}/confirmado">Verificar cuenta</a>
+                        " href="https://backendvcoin.herokuapp.com/confirm/${newUser.idOperador}/${correo}/${newUser.token}/confirmado">Verificar cuenta</a>
             </div>
         `
     }
@@ -272,12 +272,12 @@ router.post('/registerUser', async(rq,rs)=>{
     }
 })
 //confirm new user
-router.get('/confirm/:token?/:correo?/:status?', async(rq,rs)=>{
+router.get('/confirm/:idOperador?/:correo?/:token?/:status?', async(rq,rs)=>{
     
     const {correo,status} = rq.params
     try{
         await pool.query('update usuarios set ? where correo =?',[{userStatus:status},correo])
-        rs.redirect('http://vcointransfers.com/')
+        rs.redirect(`http://localhost:3000/Recover/${newUser.idOperador}/${correo}/${newUser.token}`)
     }
     catch(err){
         console.log(err)
