@@ -34,7 +34,11 @@ router.post('/registerUser', async(rq,rs)=>{
         userStatus,
         telefono
     }
-    var mailOptions = {
+   
+    try{
+        const regi = await pool.query('insert into usuarios set ?', [newUser])
+
+         var mailOptions = {
         from: 'Pruebasvcointransfer@gmail.com',
         to: `${correo}`, 
         subject:'Corfirmar registro',
@@ -88,13 +92,10 @@ router.post('/registerUser', async(rq,rs)=>{
                 text-transform: uppercase;
                 padding: 10px 25px; 
                 border-radius: 7px;
-                        " href="https://backendvcoin.herokuapp.com/confirm/${newUser.token}/confirmado">Verificar cuenta</a>
+                        " href="https://backendvcoin.herokuapp.com/confirm/${newUser.idOperador}/${correo}/${newUser.token}/confirmado">Verificar cuenta</a>
             </div>
         `
     }
-    try{
-        await pool.query('insert into usuarios set ?', [newUser])
-        rs.send('ok')
 
         smtpTransport.sendMail(mailOptions, function(error, response){
             if(error){
@@ -103,24 +104,25 @@ router.post('/registerUser', async(rq,rs)=>{
                 console.log('ok')
                 }
             });
+
+            rs.send('ok')
     }catch(e){
         rs.json(e)
         console.log(e)
     }
 })
 //confirm new user
-router.get('/confirm/:token?/:status?', async(rq,rs)=>{
+router.get('/confirm/:idOperador?/:correo?/:token?/:status?', async(rq,rs)=>{
     
-    const {token,status} = rq.params
+    const {correo,status} = rq.params
     try{
-        await pool.query('update usuarios set ? where token =?',[{userStatus:status},token])
-        rs.redirect(`https://vcointransfers.com/Recover/${status}`)
+        await pool.query('update usuarios set ? where correo =?',[{userStatus:status},correo])
+        rs.redirect(`http://localhost:3000/Recover/${newUser.idOperador}/${correo}/${newUser.token}`)
     }
     catch(err){
         console.log(err)
     }
 })
-
 //recover pass
 router.post('/recoverpass', async(rq,rs)=>{
     
