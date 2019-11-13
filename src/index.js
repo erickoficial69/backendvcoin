@@ -25,7 +25,7 @@ app.use(userServices)
 //update photo
 
 //static files 
-app.use(express.static(join(__dirname, './build/')))
+app.use(express.static(join(__dirname, './public/static')))
 
 
 const http = require('http').createServer(app)
