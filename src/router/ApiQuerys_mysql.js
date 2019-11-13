@@ -195,7 +195,7 @@ router.post('/updatePhoneNumber', async(rq,rs)=>{
         numero:rq.body.numero
     }
     try{
-        await pool.query('update telefonos set? where id =?',[newData,rq.body.id])
+        await pool.query('update usuarios set? where idUsuario =?',[newData,rq.body.id])
         rs.json({update:'ok'})
     }
     catch(err){
