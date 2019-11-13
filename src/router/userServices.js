@@ -199,16 +199,9 @@ router.post('/updatepass', async(rq,rs)=>{
 
     try{
          await pool.query('update usuarios set ? where token =?',[{password},token])
-       
-        smtpTransport.sendMail(mailOptions, function(error, response){
-            if(error){
-                console.log(error);
-            }else{
-                console.log('ok')
-                }
-            });
 
-            rs.send('Recuperacion Exitosa!!')
+        rs.send('Recuperacion Exitosa!!')
+        
     }catch(e){
         rs.json(e)
         console.log(e)
