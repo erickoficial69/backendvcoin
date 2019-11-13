@@ -192,7 +192,7 @@ router.post('/phoneNumberByUser/', async(rq,rs)=>{
 
 router.post('/updatePhoneNumber', async(rq,rs)=>{
     const newData ={
-        numero:rq.body.numero
+        telefono:rq.body.numero
     }
     try{
         await pool.query('update usuarios set? where idUsuario =?',[newData,rq.body.id])
