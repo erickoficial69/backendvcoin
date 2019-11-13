@@ -195,13 +195,11 @@ router.post('/recoverpass', async(rq,rs)=>{
 
 //recover pass
 router.post('/updatepass', async(rq,rs)=>{
-    const {password,token} = rq.body
-   return console.log(password)
+ const {password, token} = rq.body.data
+
     try{
-         await pool.query('update usuarios set ? where token =?',[{rq.body.password},token])
-        rs.redirect(`https://vcointransfers.com/Recover/${status}`)
-
-
+         await pool.query('update usuarios set ? where token =?',[{password},token])
+       
         smtpTransport.sendMail(mailOptions, function(error, response){
             if(error){
                 console.log(error);
@@ -209,7 +207,8 @@ router.post('/updatepass', async(rq,rs)=>{
                 console.log('ok')
                 }
             });
-            rs.send('revise su correo')
+
+            rs.send('Recuperacion Exitosa!!')
     }catch(e){
         rs.json(e)
         console.log(e)
