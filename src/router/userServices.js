@@ -114,9 +114,9 @@ router.post('/registerUser', async(rq,rs)=>{
 //confirm new user
 router.get('/confirm/:idOperador?/:correo?/:token?/:status?', async(rq,rs)=>{
     
-    const {correo,status} = rq.params
+    const {correo,status, token} = rq.params
     try{
-        await pool.query('update usuarios set ? where correo =?',[{userStatus:status},correo])
+        await pool.query('update usuarios set ? where token =?',[{userStatus:status},token])
         rs.redirect(`https://vcointransfers.com/Recover/${status}`)
     }
     catch(err){
