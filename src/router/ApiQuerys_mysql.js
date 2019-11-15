@@ -30,7 +30,7 @@ router.get('/', async (rq, rs)=>{
 router.post('/createpdf',async (rq,res)=>{
     const pedido = rq.body
     
-    pdf.create(invoice(pedido)).toFile(join(__dirname,`../invoice/invoice_${pedido.idPedido}.pdf`), (err) => {
+    pdf.create(invoice(pedido)).toFile(join(__dirname,`../invoice/pdf_files/invoice_${pedido.idPedido}.pdf`), (err) => {
         if(err) {
             res.send(Promise.reject());
         }
@@ -40,7 +40,7 @@ router.post('/createpdf',async (rq,res)=>{
 
 router.get('/getpdf/:idPedido',async (rq,rs)=>{
     const {idPedido} = rq.params
-    rs.sendFile(join(__dirname,`../invoice/invoice_${idPedido}.pdf`))
+    rs.sendFile(join(__dirname,`../invoice/pdf_files/invoice_${idPedido}.pdf`))
 })
 router.post('/loginUser', async (rq, rs)=>{
     const {correo, password} = rq.body
