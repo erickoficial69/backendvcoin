@@ -83,6 +83,7 @@ router.get('/paises', async (rq, rs)=>{
 router.get('/getUsers',async(rq,rs)=>{
     try{
         const users = await pool.query('select * from usuarios')
+        console.log(users)
         rs.json(users)
     }
     catch(e){
@@ -177,19 +178,16 @@ router.post('/pedido', async (rq, rs)=>{
       }       
     
 })
-
-
-//get Phone
-router.post('/phoneNumberByUser/', async(rq,rs)=>{
-    try{
-        const phone = await pool.query('select * from telefonos',[rq.body])
-        rs.json(phone)
-    }
-    catch(err){
-        console.log(err)
+//rastreador pedido
+router.post('/rastrearpedido', async (rq,rs)=>{
+    const {idPedido} = rq.body
+    try {
+        const result = await pool.query(`select idPedido,status from pedidos where idPedido = ${idPedido}`)
+        rs.send(result[0])
+    } catch (error) {
+        console.log(error)
     }
 })
-
 router.post('/updatePhoneNumber', async(rq,rs)=>{
     const newData ={
         telefono:rq.body.numero
@@ -242,7 +240,6 @@ router.post('/mailVerify', async(rq,rs)=>{
         return rs.json('error')
     }
 })
-
 //add bankAcount
 router.post('/newBankAcount', async(rq,rs)=>{
     
@@ -333,7 +330,6 @@ router.get('/deletebank/:id?', async (rq, rs)=>{
      
  })
 // get img Paises
-
 router.get('/imgpaises', async (rq, rs)=>{
    
     try{
@@ -346,10 +342,7 @@ router.get('/imgpaises', async (rq, rs)=>{
     }      
     
 })
-
-
 // get dataPais
-
 router.get('/datapais/:name?', async (rq, rs)=>{
    const {name} = rq.params
     try{
@@ -361,7 +354,6 @@ router.get('/datapais/:name?', async (rq, rs)=>{
     }      
     
 })
-
 router.post('/savemessage',async(rq,rs)=>{
     try{
         await pool.query('insert into mensajes set?',[rq.body])
