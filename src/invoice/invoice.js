@@ -8,11 +8,13 @@ return `
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-no-scale=1">
+    <meta name="viewport" content="width=device-width, initial-no-scale=1, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
     <style>
-
+        *{
+            box-sizing:border-box;
+        }
         body{
             font-family: sans-serif;
         }
@@ -81,13 +83,13 @@ return `
             
             position: relative;
             margin: 0 auto;
-            width: 90%;
+            width: 100%;
         }
         .DatosDetalles>div {
             background-color: #e1f5fc;
             margin: 10px 5px;
             padding: 20px;
-            width: 295px;
+            width: 270px;
             height: 210px;
             border-radius: 10px;
         }
