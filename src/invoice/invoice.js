@@ -27,7 +27,6 @@ return `
         h3,
         h4 {
             color: rgb(16, 108, 160);
-            font-weight: bold;
             line-height: 2;
         }
 
@@ -38,11 +37,11 @@ return `
         }
 
         h1 {
-            font-size: 25px;
+            font-size: 18px;
         }
 
         h2 {
-            font-size: 20px;
+            font-size: 16px;
         }
 
         p>span {
@@ -124,7 +123,7 @@ return `
         .DatosDetalles>div>p {
             text-align: left;
             margin: 0 3%;
-            font-size: 16px;
+            font-size: 11px;
             color: #767676;
             line-height: 1.4;
             text-transform: capitalize;
