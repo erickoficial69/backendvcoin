@@ -6,8 +6,6 @@ const {join} = require('path')
 
 const invoice = require('../invoice/invoice') 
 
-
-
 var smtpConfig = {
     host: 'smtp.gmail.com',
     port: 465,
