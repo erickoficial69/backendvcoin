@@ -364,7 +364,7 @@ router.post('/savemessage',async(rq,rs)=>{
         rs.send('mensaje enviado')
     }
     catch(e){
-        rs.send('error')
+        rs.send(e)
     }
 })
 module.exports = router
