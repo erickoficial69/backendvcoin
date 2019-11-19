@@ -40,18 +40,18 @@ return `
         }
 
         h1 {
-            font-size: 18px !important;
+            font-size: 12px !important;
         }
 
         h2 {
-            font-size: 16px !important;
+            font-size: 12px !important;
         }
 
         p>span {
             font-weight: bolder;
             line-height: 2;
             color: #106ca0;
-            font-size: 16px !important;
+            font-size: 12px !important;
             text-transform: uppercase;
             word-wrap: break-word !important;
         }
@@ -97,7 +97,7 @@ return `
         .DatosDetalles>div>h2 {
             text-transform: uppercase;
             line-height: 2;
-            font-size: 16px !important;
+            font-size: 12px !important;
             margin-top: -15px;
         }
 
@@ -109,7 +109,7 @@ return `
         .DatosDetalles>div>p {
             text-align: left;
             margin: 0 3%;
-            font-size: 16px !important;
+            font-size: 12px !important;
             color: #767676;
             line-height: 1.4;
             text-transform: capitalize;
@@ -144,7 +144,7 @@ return `
         }
 
         .TotalDestino{
-            font-size: 18px !important;
+            font-size: 12px !important;
             line-height: 1.8;
         }
         .TotalRemitente{
