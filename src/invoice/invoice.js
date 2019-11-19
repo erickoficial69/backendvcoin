@@ -40,15 +40,15 @@ return `
         }
 
         h1 {
-            font-size: 12px !important;
+            font-size: 16px !important;
         }
 
         h2 {
-            font-size: 12px !important;
+            font-size: 14px !important;
         }
 
         p>span {
-            font-weight: bolder;
+            font-weight: lighter;
             line-height: 2;
             color: #106ca0;
             font-size: 12px !important;
