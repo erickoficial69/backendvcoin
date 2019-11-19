@@ -2,9 +2,10 @@
 module.exports = (pedido) => {
     
 return `
-<!DOCTYPE html>
-<html>
 
+<!DOCTYPE html>
+    
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -50,22 +51,10 @@ return `
             font-weight: bolder;
             line-height: 2;
             color: #106ca0;
+            font-size: 16px !important;
             text-transform: uppercase;
             word-wrap: break-word !important;
         }
-        /.flecha{
-            width: 30px;
-            height: 30px;
-            background:linear-gradient(315deg, white 50%, #01578c 50%);
-            background-repeat: no-repeat;
-            background-size: cover;
-            position: relative;
-            transform: rotate(135deg);
-            overflow: hidden;
-            border: 1px solid white;
-            margin: 100px 0 0 -10px;
-        }
-
         /*-------------------------------------------
 -------------   Detalles table ------------------
 ---------------------------------------------*/
@@ -92,21 +81,17 @@ return `
             background-color: #e1f5fc;
             margin: 10px auto;
             padding: 20px;
-            width: 40% !mportant;
             height: 210px;
             overflow:hidden;
             border-radius: 10px;
         }
         .Remitente{
           float: left;
-        }
-        .F{
-            max-width: 25px;
-            display: none;
+            width: 40%;
         }
         .Destino{
            float: right;
-            
+            width: 40%;           
         }
 
         .DatosDetalles>div>h2 {
@@ -119,13 +104,12 @@ return `
         .DatosDetalles>div>p>span {
             font-weight: bold;
             color: rgb(16, 108, 160);
-
         }
 
         .DatosDetalles>div>p {
             text-align: left;
             margin: 0 3%;
-            font-size: 11px !important;
+            font-size: 16px !important;
             color: #767676;
             line-height: 1.4;
             text-transform: capitalize;
@@ -147,7 +131,7 @@ return `
             text-align: left;
             border-bottom: 1px solid #5f8e44;
             line-height: 2;
-            font-size: 11px !important;
+            font-size: 14px !important;
             text-transform: capitalize;
             position: relative;
         }
@@ -159,8 +143,8 @@ return `
             color: #5f8e44;
         }
 
-        .TotalDestino {
-            font-size: 11px !important;
+        .TotalDestino{
+            font-size: 18px !important;
             line-height: 1.8;
         }
         .TotalRemitente{
@@ -176,39 +160,6 @@ return `
             clear: both;
             border-bottom: 3px dashed grey;
         }
-
-/*
-
-        @media only screen and (max-width:720px) {
-             .DatosDetalles {
-                display: flex;
-                flex-flow: column;
-            }
-
-            .flecha{
-            transform: rotate(225deg);
-            margin: 0px auto 10px;
-            }
-            .Totales{
-                display: flex;
-                flex-flow: column;
-            }
-            .Totales>span{
-                width: 75%;
-            }
-            .Totales>span>p {
-                line-height: 3;
-            }
-
-            .Totales>span>p>span {
-                line-height: 3;
-            }
-
-            .Totales>span>p:nth-child(4) {
-                display: none;
-            }
-        }
-*/
     </style>
 
     <title>tablero</title>
@@ -378,5 +329,5 @@ return `
 </body>
 
 </html>
-`;
+`
 };
