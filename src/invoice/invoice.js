@@ -92,7 +92,7 @@ return `
             background-color: #e1f5fc;
             margin: 10px auto;
             padding: 20px;
-            width: 35% !mportant;
+            width: 40% !mportant;
             height: 210px;
             overflow:hidden;
             border-radius: 10px;
@@ -238,7 +238,7 @@ return `
                     <span>Referencia Deposito:</span> ${pedido.referenciaDeposito?pedido.referenciaDeposito:'por definir'}
                 </p>
             </div>
-            <span class="F"><div class="flecha"></div></span>
+            
             <div class="Destino">
                 <h2>${pedido.status==='pagada' || pedido.status==='completada' ?'destinatario':'Cuenta Vcoin'}</h2>
                 <p>
