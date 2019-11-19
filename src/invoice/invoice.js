@@ -80,8 +80,8 @@ return `
         .DatosDetalles>div {
             background-color: #e1f5fc;
             margin: 10px auto;
-            padding: 20px;
-            height: 180px;
+            padding: 5px 10px;
+            height: 150px;
             overflow:hidden;
             border-radius: 10px;
         }
