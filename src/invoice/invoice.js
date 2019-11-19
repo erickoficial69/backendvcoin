@@ -81,7 +81,7 @@ return `
             background-color: #e1f5fc;
             margin: 10px auto;
             padding: 20px;
-            height: 210px;
+            height: 180px;
             overflow:hidden;
             border-radius: 10px;
         }
