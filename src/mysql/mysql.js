@@ -10,11 +10,11 @@ const {promisify} = require('util')
 })*/
 
 const pool = mysql.createPool({
-    database:'bve6dsbfjomqknxl1zt3',
-    user:'uh0f7khjnicpyoha',
-    password:'GRfj2F8gwxOGqNQUirSh',
-    host:'bve6dsbfjomqknxl1zt3-mysql.services.clever-cloud.com',
-    connectionLimit:3
+    database:'sql9312738',
+    user:'sql9312738',
+    password:'zBATm23uaG',
+    host:'sql9.freesqldatabase.com',
+    connectionLimit:10
 })
 
 pool.getConnection((err, connection)=>{
