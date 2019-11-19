@@ -38,11 +38,11 @@ return `
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 18px !mportant;
         }
 
         h2 {
-            font-size: 16px;
+            font-size: 11px !mportant;
         }
 
         p>span {
@@ -93,7 +93,7 @@ return `
             margin: 10px auto;
             padding: 20px;
             width: 43%;
-            height: 210px;
+            height: 220px;
             border-radius: 10px;
         }
         .Remitente{
@@ -111,7 +111,7 @@ return `
         .DatosDetalles>div>h2 {
             text-transform: uppercase;
             line-height: 2;
-            font-size: 20px;
+            font-size: 16px !mportant;
             margin-top: -15px;
         }
 
@@ -124,7 +124,7 @@ return `
         .DatosDetalles>div>p {
             text-align: left;
             margin: 0 3%;
-            font-size: 16px;
+            font-size: 11px !important;
             color: #767676;
             line-height: 1.4;
             text-transform: capitalize;
@@ -146,7 +146,7 @@ return `
             text-align: left;
             border-bottom: 1px solid #5f8e44;
             line-height: 2;
-            font-size: 13px;
+            font-size: 11px !important;
             text-transform: capitalize;
             position: relative;
         }
@@ -159,7 +159,7 @@ return `
         }
 
         .TotalDestino {
-            font-size: 16px;
+            font-size: 11px !important;
             line-height: 1.8;
         }
         .TotalRemitente{
