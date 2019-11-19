@@ -15,6 +15,7 @@ return `
         *{
             margin:0;
             padding:0;
+            font-size:8px !important;
         }
         body{
             font-family: sans-serif;
@@ -83,17 +84,17 @@ return `
             color: white;
         }
         .DatosDetalles{
-            
             position: relative;
-            margin: 0 auto;
-            width: 90%;
+            margin: 0px auto;
+            width: 95%;
         }
         .DatosDetalles>div {
             background-color: #e1f5fc;
             margin: 10px auto;
             padding: 20px;
-            width: 43%;
-            height: 220px;
+            width: 35% !mportant;
+            height: 210px;
+            overflow:hidden;
             border-radius: 10px;
         }
         .Remitente{
