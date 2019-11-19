@@ -38,11 +38,11 @@ return `
         }
 
         h1 {
-            font-size: 18px !mportant;
+            font-size: 18px !important;
         }
 
         h2 {
-            font-size: 11px !mportant;
+            font-size: 16px !important;
         }
 
         p>span {
@@ -111,7 +111,7 @@ return `
         .DatosDetalles>div>h2 {
             text-transform: uppercase;
             line-height: 2;
-            font-size: 16px !mportant;
+            font-size: 16px !important;
             margin-top: -15px;
         }
 
