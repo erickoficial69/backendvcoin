@@ -1,8 +1,7 @@
 
 module.exports = (pedido) => {
     
-return `
-<!DOCTYPE html>
+return `<!DOCTYPE html>
 <html>
 
 <head>

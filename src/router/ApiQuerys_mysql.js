@@ -28,7 +28,7 @@ router.get('/', async (rq, rs)=>{
 router.post('/createpdf',async (rq,res)=>{
     const pedido = rq.body
     
-    pdf.create(invoice(pedido)).toFile(join(__dirname,`../invoice/invoice_${pedido.idPedido}.pdf`), (err) => {
+    pdf.create(invoice(pedido)).toFile(join(__dirname,`../invoice/pdfs/invoice_${pedido.idPedido}.pdf`), (err) => {
         if(err) {
             res.send(Promise.reject());
         }
@@ -38,7 +38,7 @@ router.post('/createpdf',async (rq,res)=>{
 
 router.get('/getpdf/:idPedido',async (rq,rs)=>{
     const {idPedido} = rq.params
-    rs.sendFile(join(__dirname,`../invoice/invoice_${idPedido}.pdf`))
+    rs.sendFile(join(__dirname,`../invoice/pdfs/invoice_${idPedido}.pdf`))
 })
 router.post('/loginUser', async (rq, rs)=>{
     const {correo, password} = rq.body
@@ -184,9 +184,21 @@ router.post('/pedido', async (rq, rs)=>{
 router.post('/rastrearpedido', async (rq,rs)=>{
     const {idPedido} = rq.body
     try {
-        const result = await pool.query(`select idPedido,status from pedidos where idPedido = ${idPedido}`)
-        rs.send(result[0])
+        const pedido = await pool.query(`select * from pedidos where idPedido = ${idPedido}`)
+        const usuario = await pool.query(`select * from usuarios where idUsuario = ${pedido[0].idUsuario}`)
+
+        const resultado = {
+            idPedido:pedido[0].idPedido,
+            remitente:usuario[0].nombre+' '+usuario[0].apellido,
+            montoDeposito:pedido[0].montoDeposito,
+            montoRetiro:pedido[0].montoRetiro,
+            monedaDeposito:pedido[0].monedaDeposito,
+            monedaRetiro:pedido[0].monedaRetiro,
+            status:pedido[0].status
+        }
+        rs.send(resultado)
     } catch (error) {
+        rs.send(error)
         console.log(error)
     }
 })

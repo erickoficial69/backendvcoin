@@ -1,6 +1,6 @@
 const pool = require('../mysql/mysql') 
 const nodemailer = require('nodemailer')
-
+const invoicemail = require('../invoice/invoicemail') 
 var smtpConfig = {
     host: 'smtp.gmail.com',
     port: 465,
@@ -61,9 +61,11 @@ module.exports = ws =>{
         ws.on('newComent',data=>{
             newComent(data)
         })
-       
+        ws.on('updateComent',data=>{
+            updateComent(data)
+        })
         coments()
-        
+        comentsAdm()
         //cierre de eventos sockets
     })
 //funciones de sockets
@@ -161,27 +163,13 @@ const newOrder = async(pedido)=>{
                 from: 'Pruebasvcointransfer@gmail.com',
                 to: `${usuario[0].correo}`, 
                 subject:'Nuevo pedido',
-                html: `
-                    <div>
-                        <h1>Saludos ${usuario[0].nombre}</h1>
-                        <p>Tu solicitud fue enviada a red Vcoin Transfer</p>
-                        <strong>Deposito:</strong>${pedido.montoDeposito} ${pedido.monedaRetiro}
-                        <strong>Retiro:</strong>${pedido.montoRetiro} ${pedido.monedaDeposito}
-                    </div>
-                `
+                html:invoicemail(datosPedido)
             }
             var mailVcoin = {
                 from: 'Pruebasvcointransfer@gmail.com',
                 to: `Pruebasvcointransfer@gmail.com`, 
                 subject:'Nuevo encargo',
-                html: `
-                    <div>
-                        <h1>Saludos, tienes un nuevo encargo</h1>
-                        <p>Cliente: ${usuario[0].nombre} ${usuario[0].correo}</p>
-                        <strong>Deposito:</strong>${pedido.montoDeposito} ${pedido.monedaRetiro}
-                        <strong>Retiro:</strong>${pedido.montoRetiro} ${pedido.monedaDeposito}
-                    </div>
-                `
+                html:invoicemail(datosPedido)
             }
             await pool.query('insert into pedidos set ?', [datosPedido])
             pedidos_clientes(pedido)
@@ -424,6 +412,7 @@ const newComent = async(data)=>{
         await pool.query(`insert into resenas set ?`,[data])
         ws.emit('newComent','reseña exitosa')
         coments()
+        comentsAdm()
     }
     catch(e){
         ws.emit('newComent','error')
@@ -432,11 +421,73 @@ const newComent = async(data)=>{
 }
 const coments = async()=>{
     try{
-        const coments = await pool.query(`select * from resenas order by id desc`)
-        ws.emit('coments',coments)
+        const coments = await pool.query(`select * from resenas order by id desc limit 4`)
+        const usuarios = await pool.query(`select foto,nombre from usuarios where idUsuario = ${coments[0].idRemitente}`)
+        const comentarios = coments.map(items=>{
+            return{
+                id:items.id,
+                resena:items.mensaje,
+                usuario:usuarios[0].nombre,
+                foto:usuarios[0].foto,
+                status:items.statusResena
+            }
+        })
+        ws.emit('coments',comentarios)
     }
     catch(e){
-        ws.emit('coments','error')
+        console.log(e)
+        ws.emit('coments',[{status:0}])
+    }
+    
+}
+const comentsAdm = async()=>{
+    try{
+        const coments = await pool.query(`select * from resenas order by id desc`)
+        const usuarios = await pool.query(`select foto,nombre from usuarios where idUsuario = ${coments[0].idRemitente}`)
+        const comentarios = coments.map(items=>{
+            return{
+                id:items.id,
+                resena:items.mensaje,
+                usuario:usuarios[0].nombre,
+                foto:usuarios[0].foto,
+                status:items.statusResena
+            }
+        })
+        ws.emit('comentsAdm',comentarios)
+    }
+    catch(e){
+        console.log(e)
+        ws.emit('coments',[{status:0}])
+    }
+    
+}
+const updateComent = async(data)=>{
+    const statusResena = data.accion
+    if(data.accion === 'rechazar'){
+        try{
+            await pool.query(`delete from resenas where id =?`,[data.id])
+            coments()
+            comentsAdm()
+            ws.emit('updateComent','borrada')
+        }
+        catch(e){
+            console.log(e)
+            ws.emit('coments','error')
+        }
+       
+    }
+    if(data.accion === 'aprobar'){
+        
+        try{
+            await pool.query(`update resenas set ? where id =?`,[{statusResena},data.id])
+            coments()
+            comentsAdm()
+            ws.emit('updateComent','actualizada')
+        }
+        catch(e){
+            console.log(e)
+            ws.emit('coments','error')
+        }
     }
     
 }
