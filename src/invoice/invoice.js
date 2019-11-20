@@ -65,7 +65,7 @@ return `
             height: 60px;
         }
         .Cabecera>img{
-            height: 70px;
+            height: 50px;
             padding: 5px 10px;
             float:left;
         }
