@@ -46,6 +46,7 @@ return `<!DOCTYPE html>
                ">
                 <img style="
                         padding-right: 15px;
+                        padding-top: 5px;
                         height: 60px;
                " src="https://storagevcoin.ml/images/enviado.svg" alt="">
                 <span style="
