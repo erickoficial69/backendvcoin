@@ -84,14 +84,18 @@ return `
             height: 180px;
             border-radius: 10px;
             overflow:hidden;
+            width: 200px !important;
+            max-width: 200px !important;
         }
         .Remitente{
           float: left;
-            width: 200px !mportant;
+            width: 200px !important;
+            max-width: 200px !important;
         }
         .Destino{
            float: right;
-            width: 200px !mportant;           
+            width: 200px !important;
+            max-width: 200px !important;           
         }
 
         .DatosDetalles>div>h2 {
