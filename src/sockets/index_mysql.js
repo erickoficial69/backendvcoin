@@ -199,13 +199,13 @@ const newOrder = async(pedido)=>{
                 from: 'Pruebasvcointransfer@gmail.com',
                 to: `${datosCorreo.correoUsuario}`, 
                 subject:'Nuevo pedido',
-                html:invoicemailNewOrder(datosCorreo)
+                html:"cuerpo"
             }
             var mailVcoin = {
                 from: 'Pruebasvcointransfer@gmail.com',
                 to: `${dataOperador[0].correo}`, 
                 subject:'Nuevo encargo',
-                html:invoicemailNewOrder(datosCorreo)
+                html:"cuerpo"
             }
             await pool.query('insert into pedidos set ?', [datosPedido])
 
