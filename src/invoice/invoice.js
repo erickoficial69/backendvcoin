@@ -65,7 +65,7 @@ return `
             height: 60px;
         }
         .Cabecera>img{
-            height: 50px;
+            height: 100px;
             padding: 5px 10px;
             float:left;
         }
@@ -81,8 +81,7 @@ return `
             background-color: #e1f5fc;
             margin: 10px auto;
             padding: 5px 10px;
-            height: 150px;
-            overflow:hidden;
+            height: 180px;
             border-radius: 10px;
         }
         .Remitente{

@@ -32,10 +32,10 @@ return `<!DOCTYPE html>
            background-color: rgb(16, 108, 160);
            ">
             <img style="
-            height:180px;
+            height:100px;
             width: auto;
             margin-top: -150px ;
-           " src="https://storagevcoin.ml/images/icoAlfa.png" alt="">
+           " src="https://storagevcoin.ml/images/logo_correo.png" alt="">
         </header>
         <article>
             <div style="
