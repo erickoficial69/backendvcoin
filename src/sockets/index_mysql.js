@@ -1,6 +1,6 @@
 const pool = require('../mysql/mysql') 
 const nodemailer = require('nodemailer')
-const invoicemailNewOrder = require('../invoice/invoice') 
+const invoicemailNewOrder = require('../invoice/invoicemailNewOrder') 
 var smtpConfig = {
     host: 'smtp.gmail.com',
     port: 465,

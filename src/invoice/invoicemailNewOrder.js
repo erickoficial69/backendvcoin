@@ -54,7 +54,7 @@ return `<!DOCTYPE html>
                     font-family: sans-serif;
                     color: rgb(16, 108, 160);
                     margin: 0;
-                    ">Orden ${pedido.status}</h3>
+                    ">Orden ststus</h3>
                     <p style="
                     font-family: sans-serif;
                     color: rgb(122,122,122);
@@ -62,7 +62,7 @@ return `<!DOCTYPE html>
                     ">
 
                         <strong>
-                                ${pedido.idPedido?'#'+pedido.idPedido:null}
+                                idpedido
                         </strong>
                     </p>
                 </span>
@@ -90,20 +90,20 @@ return `<!DOCTYPE html>
                   border-bottom: 1.5px solid #186f9f;
                   ">
                     <strong style="font-weight: bold;
-    color: #186f9f;">Pais:</strong> ${pedido.paisUsuario}
+    color: #186f9f;">Pais:</strong> paisusuario
                     <br>
                     <strong style="font-weight: bold;
-    color: #186f9f;">Nombres:</strong> ${pedido.nombreUsuario}
+    color: #186f9f;">Nombres:</strong> nombreusuario
                     <br>
                     <strong style="font-weight: bold;
-    color: #186f9f;">C.I:</strong> ${pedido.dniUsuario}
+    color: #186f9f;">C.I:</strong> dniusuario
                     <br>
                     <strong style="font-weight: bold;
     color: #186f9f;"></strong>
                     <br>
 
                     <strong style="font-weight: bold;
-    color: #186f9f;">telefono:</strong> ${pedido.telefonoUsuario}
+    color: #186f9f;">telefono:</strong> telefonousuario
                 </p>
 
                 <div>
@@ -117,19 +117,19 @@ font-size: 16px;
             ">pagar a</h2>
                 <p style="color:rgb(122,122,122);font-family: sans-serif;">
                         <strong style="font-weight: bold;
-                    color: #186f9f;">Pais:</strong> ${pedido.paisVcoin?pedido.paisVcoin:''}
+                    color: #186f9f;">Pais:</strong> paisvcoin
                                         <br>
                         <strong style="font-weight: bold;
-                    color: #186f9f;">Nombres:</strong> ${pedido.titularVcoin?pedido.titularVcoin:''}
+                    color: #186f9f;">Nombres:</strong> titularvcoin
                                         <br>
                         <strong style="font-weight: bold;
-                    color: #186f9f;">C.I:</strong> ${pedido.dniTitularVcoin?pedido.dniTitularVcoin:''}
+                    color: #186f9f;">C.I:</strong> dnititularvcoin
                                         <br>
                         <strong style="font-weight: bold;
-                    color: #186f9f;">Banco:</strong> ${pedido.bancoVcoin?pedido.bancoVcoin:''}
+                    color: #186f9f;">Banco:</strong> bancovcoin
                                         <br>
                         <strong style="font-weight: bold;
-                    color: #186f9f;">Numero de cuenta:</strong> ${pedido.nCuentaVcoin?pedido.nCuentaVcoin:''}
+                    color: #186f9f;">Numero de cuenta:</strong> ncuentavcoin
                                         <br>
                                     </p>
             </div>
@@ -156,7 +156,7 @@ font-size: 16px;
     color: #5f8e44;
                               
                                ">
-                               ${pedido.montoDeposito} ${pedido.monedaDeposito}
+                               monto y moneda deposito
                         </strong>
                     </p>
                     <p style="
@@ -174,7 +174,7 @@ font-size: 16px;
     right: 3%;
     color: #5f8e44;
                                ">
-                               ${pedido.montoRetiro} ${pedido.monedaRetiro}
+                              monto moneda retiro
                         </strong>
                     </p>
                 </span>
