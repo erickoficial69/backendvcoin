@@ -32,8 +32,9 @@ return `<!DOCTYPE html>
            background-color: rgb(16, 108, 160);
            ">
             <img style="
-           max-width: 223px;
-           margin: 5px;
+            height:180px;
+            width: auto;
+            margin: -50px 5px 5px 5px;
            " src="https://storagevcoin.ml/images/icoAlfa.png" alt="">
         </header>
         <article>
