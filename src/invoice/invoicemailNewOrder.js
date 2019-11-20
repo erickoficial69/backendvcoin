@@ -34,7 +34,7 @@ return `<!DOCTYPE html>
             <img style="
            max-width: 223px;
            margin: 5px;
-           " src="https://storagevcoin.ml/images/logo-menu.jpg" alt="">
+           " src="https://storagevcoin.ml/images/icoAlfa.png" alt="">
         </header>
         <article>
             <div style="
@@ -62,7 +62,7 @@ return `<!DOCTYPE html>
                     ">
 
                         <strong>
-                                ${pedido.idPedido?'#'+pedido.idPedido:null}
+                                ${pedido.idPedido?'#'+pedido.idPedido:''}
                         </strong>
                     </p>
                 </span>
@@ -103,7 +103,7 @@ return `<!DOCTYPE html>
                     <br>
 
                     <strong style="font-weight: bold;
-    color: #186f9f;">telefono:</strong> ${pedido.telefonoUsuario}
+    color: #186f9f;">telefono:</strong> ${pedido.telefonoUsuario?pedido.telefonoUsuario:''}
                 </p>
 
                 <div>
