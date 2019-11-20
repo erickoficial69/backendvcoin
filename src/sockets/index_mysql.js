@@ -313,7 +313,7 @@ const updatePedidoAdm = async(data)=>{
             try{
                 const pedido = await pool.query(`select * from pedidos where idPedido= ${data.idPedido}`)
 
-                const cliente = await pool.query(`select nombre,apellido,correo,rango from usuarios where idUsuario = ${pedido[0].idUsuario}`)
+                const cliente = await pool.query(`select * from usuarios where idUsuario = ${pedido[0].idUsuario}`)
 
                 const mensaje ={
                    titulo:`${cliente[0].nombre}  ${cliente[0].apellido}`,
@@ -373,7 +373,7 @@ const updatePedidoAdm = async(data)=>{
                             var mailOptions = {
                                 from: 'Pruebasvcointransfer@gmail.com',
                                 to: `${dataFinal.correoUsuario},${dataFinal.correoOperador}`, 
-                                subject:'Corfirmar registro',
+                                subject:'Pedido actualizado '+dataFinal.status,
                                 html:invoicemailNewOrder(dataFinal)
                             }
                             
