@@ -6,9 +6,12 @@ var smtpConfig = {
     port: 465,
     secure: true, // use SSL
     auth: {
-        user: 'Pruebasvcointransfer@gmail.com',
+         user: 'Pruebasvcointransfer@gmail.com',
         pass: '7878984654'
-    }
+    },
+    tls: {
+            rejectUnauthorized: false
+        }
 };
 
 var smtpTransport = nodemailer.createTransport(smtpConfig);
@@ -175,7 +178,7 @@ const newOrder = async(pedido)=>{
                 idUsuario:pedido.idUsuario,
                 fechaPedido:pedido.fechaPedido,
                 nombreUsuario:usuario[0].nombre,
-                correoUsuario:pedido.correoUsuario,
+                correoUsuario:usuario[0].correo,
                 dniUsuario:usuario[0].dni,
                 paisUsuario:usuario[0].pais,
                 telefonoUsuario:usuario[0].telefono,
@@ -191,9 +194,10 @@ const newOrder = async(pedido)=>{
                 tipoCuentaVcoin:banco[0].tipoCuenta,
                 mensaje:''    
               }
+              console.log(datosCorreo)
               var mailCliente = {
                 from: 'Pruebasvcointransfer@gmail.com',
-                to: `${pedido.correoUsuario}`, 
+                to: `${datosCorreo.correoUsuario}`, 
                 subject:'Nuevo pedido',
                 html:invoicemailNewOrder(datosCorreo)
             }

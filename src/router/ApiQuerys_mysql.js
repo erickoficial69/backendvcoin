@@ -13,7 +13,10 @@ var smtpConfig = {
     auth: {
         user: 'Pruebasvcointransfer@gmail.com',
         pass: '7878984654'
-    }
+    },
+    tls: {
+            rejectUnauthorized: false
+        }
 };
  
 var smtpTransport = nodemailer.createTransport(smtpConfig); 
