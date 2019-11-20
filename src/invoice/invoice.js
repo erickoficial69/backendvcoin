@@ -83,25 +83,25 @@ return `
             height: 180px;
             border-radius: 10px;
             overflow:hidden;
-            width: 280px !important;
-            max-width: 280px !important;
+            width: 250px !important;
+            max-width: 250px !important;
         }
         .Remitente{
           float: left;
-            width: 280px !important;
-            max-width: 280px !important;
+            width: 250px !important;
+            max-width: 250px !important;
         }
         .Destino{
            float: right;
-            width: 280px !important;
-            max-width: 280px !important;           
+            width: 250px !important;
+            max-width: 250px !important;           
         }
 
         .DatosDetalles>div>h2 {
             text-transform: uppercase;
             line-height: 2;
             font-size: 12px !important;
-            margin-top: -15px;
+            margin-top: 5px;
         }
 
         .DatosDetalles>div>p>span {
