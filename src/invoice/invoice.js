@@ -65,7 +65,7 @@ return `
             height: 60px;
         }
         .Cabecera>img{
-            height: 100px;
+            height: 80px;
             padding: 5px 10px;
             float:left;
         }
@@ -170,7 +170,7 @@ return `
     <main>
         <article>
           <div class="Cabecera">
-              <img src="https://storagevcoin.ml/images/icoAlfa.png" alt="">
+              <img src="https://storagevcoin.ml/images/logo_correo.png" alt="">
               <h1>Factura de orden #${pedido.idPedido}</h1>
           </div>
            <div class="DatosDetalles">
