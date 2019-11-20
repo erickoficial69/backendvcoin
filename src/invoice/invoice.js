@@ -48,7 +48,6 @@ return `
         }
 
         p>span {
-            font-weight: lighter;
             line-height: 2;
             color: #106ca0;
             font-size: 12px !important;
@@ -84,18 +83,18 @@ return `
             height: 180px;
             border-radius: 10px;
             overflow:hidden;
-            width: 200px !important;
-            max-width: 200px !important;
+            width: 280px !important;
+            max-width: 280px !important;
         }
         .Remitente{
           float: left;
-            width: 200px !important;
-            max-width: 200px !important;
+            width: 280px !important;
+            max-width: 280px !important;
         }
         .Destino{
            float: right;
-            width: 200px !important;
-            max-width: 200px !important;           
+            width: 280px !important;
+            max-width: 280px !important;           
         }
 
         .DatosDetalles>div>h2 {
@@ -106,7 +105,6 @@ return `
         }
 
         .DatosDetalles>div>p>span {
-            font-weight: bold;
             color: rgb(16, 108, 160);
         }
 
@@ -135,13 +133,12 @@ return `
             text-align: left;
             border-bottom: 1px solid #5f8e44;
             line-height: 2;
-            font-size: 14px !important;
+            font-size: 12px !important;
             text-transform: capitalize;
             position: relative;
         }
 
         .Totales>span>p>span {
-            font-weight: bold;
             position: absolute;
             right: 3%;
             color: #5f8e44;
