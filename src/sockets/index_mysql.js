@@ -194,7 +194,7 @@ const newOrder = async(pedido)=>{
                 tipoCuentaVcoin:banco[0].tipoCuenta,
                 mensaje:''    
               }
-              console.log(datosCorreo)
+          
               var mailCliente = {
                 from: 'Pruebasvcointransfer@gmail.com',
                 to: `${datosCorreo.correoUsuario}`, 
@@ -205,7 +205,7 @@ const newOrder = async(pedido)=>{
                 from: 'Pruebasvcointransfer@gmail.com',
                 to: `${dataOperador[0].correo}`, 
                 subject:'Nuevo encargo',
-                html:"cuerpo"
+                html:invoicemailNewOrder(datosCorreo)
             }
             await pool.query('insert into pedidos set ?', [datosPedido])
 

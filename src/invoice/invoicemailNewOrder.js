@@ -1,5 +1,5 @@
 
-module.exports = (datosCorreo) => {
+module.exports = (pedido) => {
     
 return `<!DOCTYPE html>
 <html>
@@ -54,7 +54,7 @@ return `<!DOCTYPE html>
                     font-family: sans-serif;
                     color: rgb(16, 108, 160);
                     margin: 0;
-                    ">Orden ststus</h3>
+                    ">Orden ${pedido.status}</h3>
                     <p style="
                     font-family: sans-serif;
                     color: rgb(122,122,122);
@@ -62,7 +62,7 @@ return `<!DOCTYPE html>
                     ">
 
                         <strong>
-                                idpedido
+                                ${pedido.idPedido?'#'+pedido.idPedido:null}
                         </strong>
                     </p>
                 </span>
@@ -90,20 +90,20 @@ return `<!DOCTYPE html>
                   border-bottom: 1.5px solid #186f9f;
                   ">
                     <strong style="font-weight: bold;
-    color: #186f9f;">Pais:</strong> paisusuario
+    color: #186f9f;">Pais:</strong> ${pedido.paisUsuario}
                     <br>
                     <strong style="font-weight: bold;
-    color: #186f9f;">Nombres:</strong> nombreusuario
+    color: #186f9f;">Nombres:</strong> ${pedido.nombreUsuario}
                     <br>
                     <strong style="font-weight: bold;
-    color: #186f9f;">C.I:</strong> dniusuario
+    color: #186f9f;">C.I:</strong> ${pedido.dniUsuario}
                     <br>
                     <strong style="font-weight: bold;
     color: #186f9f;"></strong>
                     <br>
 
                     <strong style="font-weight: bold;
-    color: #186f9f;">telefono:</strong> telefonousuario
+    color: #186f9f;">telefono:</strong> ${pedido.telefonoUsuario}
                 </p>
 
                 <div>
@@ -117,19 +117,19 @@ font-size: 16px;
             ">pagar a</h2>
                 <p style="color:rgb(122,122,122);font-family: sans-serif;">
                         <strong style="font-weight: bold;
-                    color: #186f9f;">Pais:</strong> paisvcoin
+                    color: #186f9f;">Pais:</strong> ${pedido.paisVcoin?pedido.paisVcoin:''}
                                         <br>
                         <strong style="font-weight: bold;
-                    color: #186f9f;">Nombres:</strong> titularvcoin
+                    color: #186f9f;">Nombres:</strong> ${pedido.titularVcoin?pedido.titularVcoin:''}
                                         <br>
                         <strong style="font-weight: bold;
-                    color: #186f9f;">C.I:</strong> dnititularvcoin
+                    color: #186f9f;">C.I:</strong> ${pedido.dniTitularVcoin?pedido.dniTitularVcoin:''}
                                         <br>
                         <strong style="font-weight: bold;
-                    color: #186f9f;">Banco:</strong> bancovcoin
+                    color: #186f9f;">Banco:</strong> ${pedido.bancoVcoin?pedido.bancoVcoin:''}
                                         <br>
                         <strong style="font-weight: bold;
-                    color: #186f9f;">Numero de cuenta:</strong> ncuentavcoin
+                    color: #186f9f;">Numero de cuenta:</strong> ${pedido.nCuentaVcoin?pedido.nCuentaVcoin:''}
                                         <br>
                                     </p>
             </div>
@@ -149,14 +149,14 @@ font-size: 16px;
     position: relative;
                       font-family: sans-serif;
                        ">
-                        monto: <strong style="
+                        monto deposito: <strong style="
                                font-weight: bold;
     position: absolute;
     right: 3%;
     color: #5f8e44;
                               
                                ">
-                               monto y moneda deposito
+                               ${pedido.montoDeposito} ${pedido.monedaDeposito}
                         </strong>
                     </p>
                     <p style="
@@ -167,14 +167,13 @@ font-size: 16px;
     position: relative;
                       font-family: sans-serif;
                        ">
-                        Taza de
-                        l dia: <strong style="
+                        Monto retiro: <strong style="
                               font-weight: bold;
     position: absolute;
     right: 3%;
     color: #5f8e44;
                                ">
-                              monto moneda retiro
+                               ${pedido.montoRetiro} ${pedido.monedaRetiro}
                         </strong>
                     </p>
                 </span>
