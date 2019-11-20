@@ -83,6 +83,7 @@ return `
             padding: 5px 10px;
             height: 180px;
             border-radius: 10px;
+            overflow:hidden;
         }
         .Remitente{
           float: left;
