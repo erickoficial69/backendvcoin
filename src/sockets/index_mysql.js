@@ -1,6 +1,6 @@
 const pool = require('../mysql/mysql') 
 const nodemailer = require('nodemailer')
-const invoicemailNewOrder = require('../invoice/invoicemailNewOrder') 
+const invoicemailNewOrder = require('../invoice/invoice') 
 var smtpConfig = {
     host: 'smtp.gmail.com',
     port: 465,
@@ -199,7 +199,7 @@ const newOrder = async(pedido)=>{
                 from: 'Pruebasvcointransfer@gmail.com',
                 to: `${datosCorreo.correoUsuario}`, 
                 subject:'Nuevo pedido',
-                html:"cuerpo"
+                html:invoicemailNewOrder(datosCorreo)
             }
             var mailVcoin = {
                 from: 'Pruebasvcointransfer@gmail.com',
