@@ -171,7 +171,7 @@ return `
     <main>
         <article>
           <div class="Cabecera">
-              <img src="https://storagevcoin.ml/images/logo-menu.jpg" alt="">
+              <img src="https://storagevcoin.ml/images/icoAlfa.png" alt="">
               <h1>Factura de orden #${pedido.idPedido}</h1>
           </div>
            <div class="DatosDetalles">

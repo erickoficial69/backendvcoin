@@ -34,7 +34,7 @@ return `<!DOCTYPE html>
             <img style="
             height:180px;
             width: auto;
-            margin: -150px 5px 5px 5px  ;
+            margin-top: -150px ;
            " src="https://storagevcoin.ml/images/icoAlfa.png" alt="">
         </header>
         <article>
