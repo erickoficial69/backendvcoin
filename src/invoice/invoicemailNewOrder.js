@@ -1,5 +1,5 @@
 
-module.exports = (pedido) => {
+module.exports = (datosCorreo) => {
     
 return `<!DOCTYPE html>
 <html>
