@@ -169,8 +169,6 @@ router.post('/pedido', async (rq, rs)=>{
                     dniUsuario:user[0].dni,
                     telefonoUsuario:user[0].telefono
                     }
-
-                    console.log(dataFinal)
                     
                     rs.json(dataFinal)
             

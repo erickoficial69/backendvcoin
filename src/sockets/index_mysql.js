@@ -1,6 +1,6 @@
 const pool = require('../mysql/mysql') 
 const nodemailer = require('nodemailer')
-const invoicemail = require('../invoice/invoicemail') 
+const invoicemailNewOrder = require('../invoice/invoicemailNewOrder') 
 var smtpConfig = {
     host: 'smtp.gmail.com',
     port: 465,
@@ -139,8 +139,11 @@ const newOrder = async(pedido)=>{
     
         try{
             
-            const usuario = await pool.query(`select idOperador,nombre,correo from usuarios where idUsuario = ${pedido.idUsuario}`)
-            const dataOperador = await pool.query(`select nombre,correo from usuarios where idUsuario = ${usuario[0].idOperador}`)
+            const usuario = await pool.query(`select * from usuarios where idUsuario = ${pedido.idUsuario}`)
+
+            const dataOperador = await pool.query(`select * from usuarios where idUsuario = ${usuario[0].idOperador}`)
+
+            const banco = await pool.query(`select * from cuentasbancarias where id = ${pedido.idBanco?pedido.idBanco:0}`)
 
             const datosPedido = {
                 montoDeposito:pedido.montoDeposito,
@@ -159,17 +162,46 @@ const newOrder = async(pedido)=>{
                 correoOperador:dataOperador[0].correo,
                 mensaje:''    
               }
+              const datosCorreo = {
+                montoDeposito:pedido.montoDeposito,
+                monedaDeposito:pedido.monedaDeposito,
+                referenciaDeposito:pedido.referenciaDeposito,
+                referenciaRetiro:'',
+                montoRetiro:pedido.montoRetiro,
+                monedaRetiro:pedido.monedaRetiro,
+                tazaCambio:pedido.tazaCambio,
+                status:'abierta',
+                idBanco:pedido.idBanco?pedido.idBanco:0,
+                idUsuario:pedido.idUsuario,
+                fechaPedido:pedido.fechaPedido,
+                nombreUsuario:usuario[0].nombre,
+                correoUsuario:usuario[0].correo,
+                dniUsuario:usuario[0].dni,
+                paisUsuario:usuario[0].pais,
+                telefonoUsuario:usuario[0].telefono,
+                idOperador:usuario[0].idOperador,
+                nombreOperador:dataOperador[0].nombre,
+                correoOperador:dataOperador[0].correo,
+                bancoVcoin:banco[0].banco?banco[0].banco:'',
+                titularVcoin:banco[0].titular,
+                dniTitularVcoin:banco[0].dniTitular,
+                paisVcoin:banco[0].paisBanco,
+                nacionalVcoin:banco[0].nacional,
+                nCuentaVcoin:banco[0].numeroCuenta,
+                tipoCuentaVcoin:banco[0].tipoCuenta,
+                mensaje:''    
+              }
               var mailCliente = {
                 from: 'Pruebasvcointransfer@gmail.com',
                 to: `${usuario[0].correo}`, 
                 subject:'Nuevo pedido',
-                html:invoicemail(datosPedido)
+                html:invoicemailNewOrder(datosCorreo)
             }
             var mailVcoin = {
                 from: 'Pruebasvcointransfer@gmail.com',
-                to: `Pruebasvcointransfer@gmail.com`, 
+                to: `${dataOperador[0].correo}`, 
                 subject:'Nuevo encargo',
-                html:invoicemail(datosPedido)
+                html:invoicemailNewOrder(datosCorreo)
             }
             await pool.query('insert into pedidos set ?', [datosPedido])
             pedidos_clientes(pedido)
@@ -201,7 +233,7 @@ const newOrder = async(pedido)=>{
 const updatePedido = async(data)=>{
         
     try{
-        const cliente = await pool.query(`select nombre,apellido,correo,rango from usuarios where idUsuario = ${data.idUsuario}`)
+        const cliente = await pool.query(`select * from usuarios where idUsuario = ${data.idUsuario}`)
 
        const mensajeToOperador ={
         titulo:`Han habido cambios`,
@@ -218,6 +250,54 @@ const updatePedido = async(data)=>{
         notificacionToOperador(mensajeToOperador)
         pedidosGenerales()
         pedidos_clientes(data)
+
+        const data1 = await pool.query('select * from pedidos where idPedido = ?',[data.idPedido])
+        const data2 = await pool.query('select * from cuentasbancarias where id = ?',[data1[0].idBanco])
+            
+        const dataFinal= {
+                    idPedido: data1[0].idPedido,
+                    montoDeposito: data1[0].montoDeposito,
+                    monedaDeposito: data1[0].monedaDeposito,
+                    montoRetiro: data1[0].montoRetiro,
+                    monedaRetiro: data1[0].monedaRetiro,
+                    tazaCambio: data1[0].tazaCambio,
+                    status: data1[0].status,
+                    fechaPedido: data1[0].fechaPedido,
+                    idUsuario: data1[0].idUsuario,
+                    idBanco: data1[0].idBanco,
+                    idOperador:data1[0].idOperador,
+                    nombreOperador: data1[0].nombreOperador,
+                    correoOperador: data1[0].correoOperador,
+                    referenciaDeposito: data1[0].referenciaDeposito,
+                    referenciaRetiro: data1[0].referenciaRetiro,
+                    fechaCompletada: data1[0].fechaCompletada,
+                    bancoVcoin:data2[0].banco?data2[0].banco:'',
+                    titularVcoin:data2[0].titular,
+                    dniTitularVcoin:data2[0].dniTitular,
+                    paisVcoin:data2[0].paisBanco,
+                    nacionalVcoin:data2[0].nacional,
+                    nCuentaVcoin:data2[0].numeroCuenta,
+                    tipoCuentaVcoin:data2[0].tipoCuenta,
+                    nombreUsuario:cliente[0].nombre+' '+cliente[0].apellido,
+                    correoUsuario:cliente[0].correo,
+                    dniUsuario:cliente[0].dni,
+                    paisUsuario:cliente[0].pais,
+                    telefonoUsuario:cliente[0].telefono
+                    }
+                    var mailOptions = {
+                        from: 'Pruebasvcointransfer@gmail.com',
+                        to: `${dataFinal.correoUsuario},${dataFinal.correoOperador}`, 
+                        subject:'Corfirmar registro',
+                        html:invoicemailNewOrder(dataFinal)
+                    }
+
+        smtpTransport.sendMail(mailOptions, function(error, response){
+            if(error){
+                console.log(error);
+            }else{
+                console.log('ok')
+                }
+            });
     }
         catch(e){
             console.log(e)
@@ -229,8 +309,6 @@ const updatePedidoAdm = async(data)=>{
                 const pedido = await pool.query(`select * from pedidos where idPedido= ${data.idPedido}`)
 
                 const cliente = await pool.query(`select nombre,apellido,correo,rango from usuarios where idUsuario = ${pedido[0].idUsuario}`)
-
-                const operador = await pool.query(`select nombre,apellido,rango from usuarios where idUsuario = ${pedido[0].idOperador}`)
 
                 const mensaje ={
                    titulo:`${cliente[0].nombre}  ${cliente[0].apellido}`,
@@ -253,7 +331,56 @@ const updatePedidoAdm = async(data)=>{
                 pedidosGenerales()
                 pedidos_clientes(pedido[0])
                 ws.emit('updatePedidoAdm','ok')
+
+                const data1 = await pool.query('select * from pedidos where idPedido = ?',[data.idPedido])
+                const data2 = await pool.query('select * from cuentasbancarias where id = ?',[data1[0].idBanco])
+                    
+                const dataFinal= {
+                            idPedido: data1[0].idPedido,
+                            montoDeposito: data1[0].montoDeposito,
+                            monedaDeposito: data1[0].monedaDeposito,
+                            montoRetiro: data1[0].montoRetiro,
+                            monedaRetiro: data1[0].monedaRetiro,
+                            tazaCambio: data1[0].tazaCambio,
+                            status: data1[0].status,
+                            fechaPedido: data1[0].fechaPedido,
+                            idUsuario: data1[0].idUsuario,
+                            idBanco: data1[0].idBanco,
+                            idOperador:data1[0].idOperador,
+                            nombreOperador: data1[0].nombreOperador,
+                            correoOperador: data1[0].correoOperador,
+                            referenciaDeposito: data1[0].referenciaDeposito,
+                            referenciaRetiro: data1[0].referenciaRetiro,
+                            fechaCompletada: data1[0].fechaCompletada,
+                            bancoVcoin:data2[0].banco?data2[0].banco:'',
+                            titularVcoin:data2[0].titular,
+                            dniTitularVcoin:data2[0].dniTitular,
+                            paisVcoin:data2[0].paisBanco,
+                            nacionalVcoin:data2[0].nacional,
+                            nCuentaVcoin:data2[0].numeroCuenta,
+                            tipoCuentaVcoin:data2[0].tipoCuenta,
+                            nombreUsuario:cliente[0].nombre+' '+cliente[0].apellido,
+                            correoUsuario:cliente[0].correo,
+                            dniUsuario:cliente[0].dni,
+                            paisUsuario:cliente[0].pais,
+                            telefonoUsuario:cliente[0].telefono
+                            }
+                            var mailOptions = {
+                                from: 'Pruebasvcointransfer@gmail.com',
+                                to: `${dataFinal.correoUsuario},${dataFinal.correoOperador}`, 
+                                subject:'Corfirmar registro',
+                                html:invoicemailNewOrder(dataFinal)
+                            }
+                            
+                smtpTransport.sendMail(mailOptions, function(error, response){
+                    if(error){
+                        console.log(error);
+                    }else{
+                        console.log('ok')
+                        }
+                    });
             }
+
             catch(e){
                 console.log(e)
             }
