@@ -175,7 +175,7 @@ const newOrder = async(pedido)=>{
                 idUsuario:pedido.idUsuario,
                 fechaPedido:pedido.fechaPedido,
                 nombreUsuario:usuario[0].nombre,
-                correoUsuario:usuario[0].correo,
+                correoUsuario:pedido.correoUsuario,
                 dniUsuario:usuario[0].dni,
                 paisUsuario:usuario[0].pais,
                 telefonoUsuario:usuario[0].telefono,
@@ -193,7 +193,7 @@ const newOrder = async(pedido)=>{
               }
               var mailCliente = {
                 from: 'Pruebasvcointransfer@gmail.com',
-                to: `${usuario[0].correo}`, 
+                to: `${pedido.correoUsuario}`, 
                 subject:'Nuevo pedido',
                 html:invoicemailNewOrder(datosCorreo)
             }
@@ -204,9 +204,6 @@ const newOrder = async(pedido)=>{
                 html:invoicemailNewOrder(datosCorreo)
             }
             await pool.query('insert into pedidos set ?', [datosPedido])
-            pedidos_clientes(pedido)
-            ws.emit('newPedido','Tienes un nuevo encargo')
-            pedidosGenerales()
 
             smtpTransport.sendMail(mailCliente, function(error, response){
             if(error){
@@ -223,6 +220,10 @@ const newOrder = async(pedido)=>{
                     console.log('ok')
                     }
                 });
+
+            pedidos_clientes(pedido)
+            ws.emit('newPedido','Tienes un nuevo encargo')
+            pedidosGenerales()
         }
         catch(e){
             console.log(e)
