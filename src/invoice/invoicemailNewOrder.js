@@ -34,7 +34,7 @@ return `<!DOCTYPE html>
             <img style="
             max-height:70px;
             width: auto;
-            margin-top: -120px ;
+            margin-top: -90px ;
            " src="https://storagevcoin.ml/images/logo_correo.png" alt="">
         </header>
         <article>

@@ -86,11 +86,11 @@ return `
         }
         .Remitente{
           float: left;
-            width: 40%;
+            width: 35%;
         }
         .Destino{
            float: right;
-            width: 40%;           
+            width: 35%;           
         }
 
         .DatosDetalles>div>h2 {
