@@ -32,7 +32,7 @@ return `<!DOCTYPE html>
            background-color: rgb(16, 108, 160);
            ">
             <img style="
-            height:80px;
+            max-height:70px;
             width: auto;
             margin-top: -120px ;
            " src="https://storagevcoin.ml/images/logo_correo.png" alt="">
