@@ -2,7 +2,6 @@
 module.exports = (pedido) => {
     
 return `
-
 <!DOCTYPE html>
     
 <html>
@@ -58,18 +57,26 @@ return `
 -------------   Detalles table ------------------
 ---------------------------------------------*/
         .Cabecera{
-            background-color: rgb(16, 108, 160);
             margin: 0;
-            padding: 0;
+            padding: 0 0 5px 0;
             height: 60px;
+            border-bottom: 2px solid grey;
         }
-        .Cabecera>img{
+        .Cabecera>div{
+            text-align: center;
+            margin-left: 5px;
+        }
+        .Cabecera>div>img{
             height: 50px;
             padding: 5px 10px;
             float:left;
+            background-color: rgb(16, 108, 160);
+            border-radius: 5px;
+            margin: 0 auto;
         }
         .Cabecera>h1{
-            color: white;
+             color: rgb(16, 108, 160);
+            line-height: 4;
         }
         .DatosDetalles{
             position: relative;
@@ -157,7 +164,7 @@ return `
         .Cortar{
             width: 100%;
             height: 0px;
-            padding: 30px 0;
+            padding: 15px 0;
             clear: both;
             border-bottom: 3px dashed grey;
         }
@@ -172,7 +179,9 @@ return `
     <main>
         <article>
           <div class="Cabecera">
-              <img src="https://storagevcoin.ml/images/logo_correo.png" alt="">
+             <div>
+              <img src="./img/logoTransparente.png" alt="">
+              </div>
               <h1>Factura de orden #${pedido.idPedido}</h1>
           </div>
            <div class="DatosDetalles">
@@ -225,6 +234,15 @@ return `
                         ${pedido.nombreOperador}
                     </span>
                 </p>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    Firma Operador: <span className="TotalDestino">
+                        
+                    </span>
+                </p>
             </span>
             <span class="TotalDestino">
             <p>
@@ -242,6 +260,13 @@ return `
                         ${pedido.montoRetiro} bsf
                     </span>
                 </p>
+                <br/>
+                <br/>
+                <p>
+                    Firma Cliente: <span className="TotalDestino">
+                        
+                    </span>
+                </p>
             </span>
             </div>
         </article>
@@ -252,7 +277,9 @@ return `
 
         <article>
           <div class="Cabecera">
+             <div>
               <img src="./img/logoTransparente.png" alt="">
+              </div>
               <h1>Factura de orden #${pedido.idPedido}</h1>
           </div>
            <div class="DatosDetalles">
@@ -305,6 +332,15 @@ return `
                         ${pedido.nombreOperador}
                     </span>
                 </p>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    Firma Operador: <span className="TotalDestino">
+                        
+                    </span>
+                </p>
             </span>
             <span class="TotalDestino">
             <p>
@@ -320,6 +356,13 @@ return `
                 <p>
                     total recibir: <span className="TotalDestino">
                         ${pedido.montoRetiro} bsf
+                    </span>
+                </p>
+                <br/>
+                <br/>
+                <p>
+                    Firma Cliente: <span className="TotalDestino">
+                        
                     </span>
                 </p>
             </span>
