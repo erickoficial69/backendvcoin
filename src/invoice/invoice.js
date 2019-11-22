@@ -59,7 +59,7 @@ return `
         .Cabecera{
             margin: 0;
             padding: 0 0 5px 0;
-            height: 60px;
+            height: 50px;
             border-bottom: 2px solid grey;
         }
         .Cabecera>div{
@@ -67,7 +67,7 @@ return `
             margin-left: 5px;
         }
         .Cabecera>div>img{
-            height: 50px;
+            height: 40px;
             padding: 5px 10px;
             float:left;
             background-color: rgb(16, 108, 160);
@@ -76,7 +76,7 @@ return `
         }
         .Cabecera>h1{
              color: rgb(16, 108, 160);
-            line-height: 4;
+            line-height: 3;
         }
         .DatosDetalles{
             position: relative;
@@ -180,7 +180,7 @@ return `
         <article>
           <div class="Cabecera">
              <div>
-              <img src="./img/logoTransparente.png" alt="">
+              <img src="https://storagevcoin.ml/images/logo_correo.png" alt="">
               </div>
               <h1>Factura de orden #${pedido.idPedido}</h1>
           </div>
@@ -261,7 +261,7 @@ return `
                     </span>
                 </p>
                 <br/>
-                <br/>
+               
                 <p>
                     Firma Cliente: <span className="TotalDestino">
                         
@@ -278,7 +278,7 @@ return `
         <article>
           <div class="Cabecera">
              <div>
-              <img src="./img/logoTransparente.png" alt="">
+              <img src="https://storagevcoin.ml/images/logo_correo.png" alt="">
               </div>
               <h1>Factura de orden #${pedido.idPedido}</h1>
           </div>
@@ -332,7 +332,6 @@ return `
                         ${pedido.nombreOperador}
                     </span>
                 </p>
-                <br/>
                 <br/>
                 <br/>
                 <br/>
