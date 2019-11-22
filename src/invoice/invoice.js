@@ -19,7 +19,7 @@ return `
         }
         body{
             font-family: sans-serif;
-            width:100%;
+            width:800px;
             position:relative;
             margin:0 auto;
         }
