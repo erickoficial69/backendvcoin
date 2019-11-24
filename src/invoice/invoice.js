@@ -20,7 +20,7 @@ return `
             font-size: 10px;
             font-style: inherit;
             font-weight: inherit;
-            line-height: 2;
+            line-height: 2.2;
             list-style: none;
             margin: 0;
             padding: 0;
@@ -213,7 +213,7 @@ return `
         }
 
         /* table meta */
-        table.meta tr{
+        tr{
             max-height: 30px;
             min-height: 29px;
             
@@ -314,12 +314,12 @@ return `
             line-height: 2;
             color: #106ca0;
             font-size: 11px !important;
+             padding: 5px;
             text-transform: uppercase;
             word-wrap: break-word !important;
         }
         .Cuentas{
             width: 60px !important;
-            padding: 0px !important;
             margin: 0 auto !important;
             font-size: 9px !important;
             line-height: 2;
@@ -349,6 +349,11 @@ return `
             clear: both;
             padding: 10cm;
             text-align: center;
+        }
+        .Tol>tr{
+            padding: 0;
+            margin: 0;
+            width: 60px;
         }
 
     </style>
@@ -428,14 +433,14 @@ return `
                    </td>
                    <td>
                        <table>
-                    
-                <tr>
-                    <th class="Cuentas"><span>Total</span></th>
-                    <td ><span data-prefix>$</span><span>600.00</span></td>
-                </tr>
+              
                 <tr>
                     <th class="Cuentas"><span>N° Referencia</span></th>
                     <td><span>${pedido.referenciaRetiro?pedido.referenciaRetiro:'por definir'}</span></td>
+                </tr>
+                <tr>
+                    <th class="Cuentas"><span>Total</span></th>
+                    <td><span>${pedido.montoRetiro} bsf</span></td>
                 </tr>
             </table>
                    </td>
@@ -444,10 +449,10 @@ return `
             </table>
             <div class="Firmas">
                          <div class="FirmaOperador">
-                          <p>Operador:  _______________________</p>
+                          <p>Operador:    _______________________</p>
                       </div>
                       <div class="FirmaRemitente">
-                          <p>Remitente:  _______________________</p>
+                          <p>Remitente:    _______________________</p>
                       </div>
             </div>
         </article>
@@ -508,7 +513,7 @@ return `
                     </tr>
                     <tr>
                        <td>
-                        <table class="">
+                        <table class="Tol">
                 <tr>
                     <th class="Cuentas"><span>Monto</span></th>
                     <td><span>${pedido.montoDeposito}</span></td>
@@ -525,16 +530,13 @@ return `
                    </td>
                    <td>
                        <table>
-                <tr>
-                    <th class="Cuentas"><span>Total</span></th>
-                    <td ><span data-prefix>$</span><span>600.00</span></td>
-                </tr>
+              
                 <tr>
                     <th class="Cuentas"><span>N° Referencia</span></th>
                     <td><span>${pedido.referenciaRetiro?pedido.referenciaRetiro:'por definir'}</span></td>
                 </tr>
                 <tr>
-                    <th class="Cuentas"><span>Balance Due</span></th>
+                    <th class="Cuentas"><span>Total</span></th>
                     <td><span>${pedido.montoRetiro} bsf</span></td>
                 </tr>
             </table>    
@@ -544,10 +546,10 @@ return `
             </table>
             <div class="Firmas">
                          <div class="FirmaOperador">
-                          <p>Operador:  _______________________</p>
+                          <p>Operador:    _______________________</p>
                       </div>
                       <div class="FirmaRemitente">
-                          <p>Remitente:  _______________________</p>
+                          <p>Remitente:    _______________________</p>
                       </div>
             </div>
         </article>
