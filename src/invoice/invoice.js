@@ -17,7 +17,7 @@ return `
             box-sizing: content-box;
             color: inherit;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 9px;
             font-style: inherit;
             font-weight: inherit;
             line-height: inherit;
@@ -439,10 +439,10 @@ return `
             </table>
             <div class="Firmas">
                          <div class="FirmaOperador">
-                          <p>Operador:  ________</p>
+                          <p>Operador:  ________________</p>
                       </div>
                       <div class="FirmaRemitente">
-                          <p>Remitente:  ________</p>
+                          <p>Remitente:  ________________</p>
                       </div>
             </div>
         </article>
@@ -539,10 +539,10 @@ return `
             </table>
             <div class="Firmas">
                          <div class="FirmaOperador">
-                          <p>Operador:  ________</p>
+                          <p>Operador:  ________________</p>
                       </div>
                       <div class="FirmaRemitente">
-                          <p>Remitente:  ________</p>
+                          <p>Remitente:  ________________</p>
                       </div>
             </div>
         </article>
