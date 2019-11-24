@@ -1,8 +1,7 @@
 
 module.exports = (pedido) => {
     
-return `
-<!doctype html>
+return `<!doctype html>
 <html>
 
 <head>
@@ -74,7 +73,6 @@ return `
         th,
         td {
             border-width: 1px;
-            padding: 0.5em;
             position: relative;
             text-align: left;
         }
@@ -192,6 +190,7 @@ return `
         /* table meta & balance */
 
         table.meta {
+            margin-top: 5px;
             float: right;
             width: 36%;
             max-height: 50px;
@@ -329,8 +328,6 @@ return `
             width: 60px !important;
             font-size: 9px !important;
             line-height: 2;
-            padding: 0;
-            
         }
         .Cortar{
             width: 100%;
