@@ -115,7 +115,7 @@ return `
         #wrapper {
             height: auto;/* 29.7cm */
             margin: 0 auto;
-            width: 20cm;
+            width: 16cm;
         }
 
         body {
@@ -325,11 +325,11 @@ return `
             border-bottom: 3px dashed grey;
         }
         .Firmas{
-            width: 20cm;
+            width: 16cm;
             margin: 50px 0 0;
         }
         .FirmaOperador,.FirmaRemintente{
-            width: 10cm !important;
+            width: 8cm !important;
             margin: 0 auto;
             position: relative;
             text-align: center;
@@ -553,6 +553,5 @@ return `
 </body>
 
 </html>
-
 `
 };
