@@ -213,17 +213,24 @@ return `
         }
 
         /* table meta */
-        tr{
-            max-height: 30px;
-            min-height: 29px;
+        tbody{
+            line-height: normal;
+        }
+        tr,.Tol{
+            max-height: 15px;
+            min-height: 10px;
             
         }
-        table.meta th {
+        table.meta th , .Tol >tr>th {
             width: 40%;
+            padding: 0;
+            line-height: 1.2;
         }
 
-        table.meta td {
+        table.meta td,.Tol >tr>td {
             width: 60%;
+            padding: 0;
+            line-height: 1.2;
         }
 
         /* table items */
@@ -320,9 +327,10 @@ return `
         }
         .Cuentas{
             width: 60px !important;
-            margin: 0 auto !important;
             font-size: 9px !important;
             line-height: 2;
+            padding: 0;
+            
         }
         .Cortar{
             width: 100%;
@@ -349,11 +357,6 @@ return `
             clear: both;
             padding: 10cm;
             text-align: center;
-        }
-        .Tol>tr{
-            padding: 0;
-            margin: 0;
-            width: 60px;
         }
 
     </style>
@@ -416,7 +419,7 @@ return `
                     </tr>
                     <tr>
                        <td>
-                        <table class="">
+                        <table class="Tol">
                 <tr>
                     <th class="Cuentas"><span>Monto</span></th>
                     <td><span>${pedido.montoDeposito}</span></td>
