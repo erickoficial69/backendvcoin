@@ -17,7 +17,7 @@ return `
             box-sizing: content-box;
             color: inherit;
             font-family: inherit;
-            font-size: inherit;
+            font-size: 14px;
             font-style: inherit;
             font-weight: inherit;
             line-height: inherit;
@@ -124,7 +124,7 @@ return `
         /* header */
 
         header {
-            margin: 1.5em auto 0;
+            margin: 1em auto 0;
         }
 
         header:after {
@@ -151,7 +151,7 @@ return `
         }
 
         header img {
-            max-height: 60px;
+            max-height: 40px;
             background-color: #115479;
             border-radius: 5px;
             margin: 0 auto;
@@ -425,7 +425,7 @@ return `
                     <td ><span data-prefix>$</span><span>600.00</span></td>
                 </tr>
                 <tr>
-                    <th class="Cuentas"><span>Referancia Bancaria</span></th>
+                    <th class="Cuentas"><span>N° Referencia</span></th>
                     <td><span>${pedido.referenciaRetiro?pedido.referenciaRetiro:'por definir'}</span></td>
                 </tr>
                 <tr>
@@ -439,17 +439,15 @@ return `
             </table>
             <div class="Firmas">
                          <div class="FirmaOperador">
-                          <p>Operador:  __________________________</p>
+                          <p>Operador:  ________</p>
                       </div>
                       <div class="FirmaRemitente">
-                          <p>Remitente:  __________________________</p>
+                          <p>Remitente:  ________</p>
                       </div>
             </div>
         </article>
     </div>
-    <br>
     <div class="Cortar"></div>
-    <br>
     <div id="wrapper">
         <header>
             <span><img alt="" src="https://storagevcoin.ml/images/logo_correo.png" /></span>
@@ -527,7 +525,7 @@ return `
                     <td ><span data-prefix>$</span><span>600.00</span></td>
                 </tr>
                 <tr>
-                    <th class="Cuentas"><span>Referancia Bancaria</span></th>
+                    <th class="Cuentas"><span>N° Referencia</span></th>
                     <td><span>${pedido.referenciaRetiro?pedido.referenciaRetiro:'por definir'}</span></td>
                 </tr>
                 <tr>
@@ -541,10 +539,10 @@ return `
             </table>
             <div class="Firmas">
                          <div class="FirmaOperador">
-                          <p>Operador:  __________________________</p>
+                          <p>Operador:  ________</p>
                       </div>
                       <div class="FirmaRemitente">
-                          <p>Remitente:  __________________________</p>
+                          <p>Remitente:  ________</p>
                       </div>
             </div>
         </article>
