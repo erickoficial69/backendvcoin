@@ -17,10 +17,10 @@ return `
             box-sizing: content-box;
             color: inherit;
             font-family: inherit;
-            font-size: 9px;
+            font-size: 10px;
             font-style: inherit;
             font-weight: inherit;
-            line-height: inherit;
+            line-height: 2;
             list-style: none;
             margin: 0;
             padding: 0;
@@ -307,7 +307,7 @@ return `
          p>span {
             line-height: 2;
             color: #106ca0;
-            font-size: 12px !important;
+            font-size: 11px !important;
             text-transform: uppercase;
             word-wrap: break-word !important;
         }
@@ -328,19 +328,19 @@ return `
             margin: 50px 0 0;
         }
         .FirmaOperador,.FirmaRemintente{
-            width: 6cm !important;
+            width: 7.25cm !important;
             margin: 0 auto;
             position: relative;
             text-align: center;
         }
         .FirmaOperador{
             float: left; 
-            margin-right: 5%;
+            text-align: center;
         }
         .FirmaRemintente{
             clear: both;
-            margin-left: 5%;
             padding: 10cm;
+            text-align: center;
         }
 
     </style>
