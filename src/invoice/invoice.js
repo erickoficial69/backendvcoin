@@ -154,7 +154,7 @@ return `
             max-height: 40px;
             background-color: #115479;
             border-radius: 5px;
-            margin: 0 auto;
+            margin: 5px auto 0;
             padding: 10px 15px 5px 10px;
         }
 
@@ -194,6 +194,8 @@ return `
         table.meta {
             float: right;
             width: 36%;
+            max-height: 50px;
+            padding: 0;
         }
         table.balance{
             width: 56%;
@@ -211,7 +213,11 @@ return `
         }
 
         /* table meta */
-
+        table.meta tr{
+            max-height: 30px;
+            min-height: 29px;
+            
+        }
         table.meta th {
             width: 40%;
         }
@@ -313,7 +319,9 @@ return `
         }
         .Cuentas{
             width: 60px !important;
-            padding: 0;
+            padding: 0px !important;
+            margin: 0 auto !important;
+            font-size: 9px !important;
             line-height: 2;
         }
         .Cortar{
@@ -325,7 +333,7 @@ return `
         }
         .Firmas{
             width: 14.5cm;
-            margin: 50px 0 0;
+            margin: 30px 0 0;
         }
         .FirmaOperador,.FirmaRemintente{
             width: 7.25cm !important;
@@ -420,6 +428,7 @@ return `
                    </td>
                    <td>
                        <table>
+                    
                 <tr>
                     <th class="Cuentas"><span>Total</span></th>
                     <td ><span data-prefix>$</span><span>600.00</span></td>
@@ -428,10 +437,6 @@ return `
                     <th class="Cuentas"><span>N° Referencia</span></th>
                     <td><span>${pedido.referenciaRetiro?pedido.referenciaRetiro:'por definir'}</span></td>
                 </tr>
-                <tr>
-                    <th class="Cuentas"><span>Balance Due</span></th>
-                    <td><span>${pedido.montoRetiro} bsf</span></td>
-                </tr>
             </table>
                    </td>
                     </tr>
@@ -439,10 +444,10 @@ return `
             </table>
             <div class="Firmas">
                          <div class="FirmaOperador">
-                          <p>Operador:  ________________</p>
+                          <p>Operador:  _______________________</p>
                       </div>
                       <div class="FirmaRemitente">
-                          <p>Remitente:  ________________</p>
+                          <p>Remitente:  _______________________</p>
                       </div>
             </div>
         </article>
@@ -485,7 +490,7 @@ return `
                                 <span>Referencia Deposito:</span> ${pedido.referenciaDeposito?pedido.referenciaDeposito:'por definir'}
                             </p>
                         </td>
-                        <td class="Cuentas">
+                        <td>
                             <p>
                                 <span>Pais:</span> ${pedido.paisVcoin?pedido.paisVcoin:''}
                                 <br>
@@ -539,10 +544,10 @@ return `
             </table>
             <div class="Firmas">
                          <div class="FirmaOperador">
-                          <p>Operador:  ________________</p>
+                          <p>Operador:  _______________________</p>
                       </div>
                       <div class="FirmaRemitente">
-                          <p>Remitente:  ________________</p>
+                          <p>Remitente:  _______________________</p>
                       </div>
             </div>
         </article>
