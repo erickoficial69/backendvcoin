@@ -1,19 +1,17 @@
 const mysql = require('mysql') 
 const {promisify} = require('util') 
-
-/*const pool = mysql.createPool({
-    database:'vc',
-    user:'root',
-    password:'',
-    host:'localhost',
-    connectionLimit:4
-})*/
+const credentials = {
+    uri: process.env.MYSQL_URI || 'localhost',
+    pass: process.env.MYSQL_PASS || '',
+    user: process.env.MYSQL_USER || 'root',
+    db: process.env.MYSQL_DB || 'vc'
+}
 
 const pool = mysql.createPool({
-    database:'sql9312738',
-    user:'sql9312738',
-    password:'zBATm23uaG',
-    host:'sql9.freesqldatabase.com',
+    database: credentials.db,
+    user: credentials.user,
+    password: credentials.pass,
+    host: credentials.uri,
     connectionLimit:10
 })
 
