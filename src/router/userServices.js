@@ -49,24 +49,21 @@ router.post('/registerUser', async(rq,rs)=>{
         <div style="
            background-color: white;
            width: 80%;
-           height: 250px;
            position: relative;
            margin: 0 auto;
            text-align: center;
            border: 2px solid #eaeaea;
            border-radius: 15px;
-           overflow: hidden
            ">
                 <h1 style="
-            font-size:30px;
+            font-size:22px;
             text-align: center;
             font-weight: bold;
             text-transform: uppercase;
             font-family: sans-serif;
             color: white;
             background-color: rgb(16, 108, 160);
-            padding: 15px 0;
-            margin-top: -1px;
+            padding: 10px 0;
             line-height: 2;
             ">¡Bienvenido!</h1>
                 <p style="
@@ -143,13 +140,11 @@ router.post('/recoverpass', async(rq,rs)=>{
             <div style="
                background-color: white;
                width: 80%;
-               height: 250px;
                position: relative;
                margin: 0 auto;
                text-align: center;
                border: 2px solid #eaeaea;
                border-radius: 15px;
-               overflow: hidden
                ">
                     <p style="
                    color: rgb(122,122,122);

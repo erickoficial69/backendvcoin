@@ -422,7 +422,11 @@ return `<!doctype html>
                     <td><span>${pedido.montoDeposito}</span></td>
                 </tr>
                 <tr>
+<<<<<<< HEAD
                     <th class="Cuentas"><span>Tasa</span></th>
+=======
+                    <th class="Cuentas"><span>Taza</span></th>
+>>>>>>> refs/remotes/origin/master
                     <td><span>${pedido.tazaCambio} </span></td>
                 </tr>
                 <tr>
@@ -519,7 +523,11 @@ return `<!doctype html>
                     <td><span>${pedido.montoDeposito}</span></td>
                 </tr>
                 <tr>
+<<<<<<< HEAD
                     <th class="Cuentas"><span>Tasa</span></th>
+=======
+                    <th class="Cuentas"><span>Taza</span></th>
+>>>>>>> refs/remotes/origin/master
                     <td><span>${pedido.tazaCambio} </span></td>
                 </tr>
                 <tr>
