@@ -363,7 +363,7 @@ return `<!doctype html>
 <body>
     <div id="wrapper">
         <header>
-            <span><img alt="" src="https://storagevcoin.ml/images/logo_correo.png" /></span>
+            <span><img alt="" src="http://storagevcoin.ml/images/logo_correo.png" /></span>
             <table class="meta">
                 <tr>
                     <th><span>Orden #</span></th>
