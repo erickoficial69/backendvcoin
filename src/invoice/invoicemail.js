@@ -3,7 +3,7 @@ module.exports = (pedido) => {
     
 return `<!DOCTYPE html>
 <html>
-
+taza
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -343,7 +343,7 @@ return `<!DOCTYPE html>
                     </span>
                 </p>
                 <p>
-                    Taza del dia: <span>
+                    Tasa del dia: <span>
                         ${pedido.tazaCambio}
                     </span>
                 </p>
