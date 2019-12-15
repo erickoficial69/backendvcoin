@@ -32,9 +32,10 @@ return `<!DOCTYPE html>
            background-color: rgb(16, 108, 160);
            ">
             <img style="
-           max-width: 223px;
-           margin: 5px;
-           " src="https://storagevcoin.ml/images/logo-menu.jpg" alt="">
+            max-height:70px;
+            width: auto;
+            margin-top: -90px ;
+           " src="https://storagevcoin.ml/images/logo_correo.png" alt="">
         </header>
         <article>
             <div style="
@@ -45,8 +46,9 @@ return `<!DOCTYPE html>
                ">
                 <img style="
                         padding-right: 15px;
+                        padding-top: 5px;
                         height: 60px;
-               " src="img/svg/enviado.svg" alt="">
+               " src="https://storagevcoin.ml/images/enviado.svg" alt="">
                 <span style="
                    margin: 10px 0;
                    ">
@@ -62,7 +64,7 @@ return `<!DOCTYPE html>
                     ">
 
                         <strong>
-                                ${pedido.idPedido?'#'+pedido.idPedido:null}
+                                ${pedido.idPedido?'#'+pedido.idPedido:''}
                         </strong>
                     </p>
                 </span>
@@ -103,7 +105,7 @@ return `<!DOCTYPE html>
                     <br>
 
                     <strong style="font-weight: bold;
-    color: #186f9f;">telefono:</strong> ${pedido.telefonoUsuario}
+    color: #186f9f;">telefono:</strong> ${pedido.telefonoUsuario?pedido.telefonoUsuario:''}
                 </p>
 
                 <div>
@@ -149,7 +151,7 @@ font-size: 16px;
     position: relative;
                       font-family: sans-serif;
                        ">
-                        monto: <strong style="
+                        monto deposito: <strong style="
                                font-weight: bold;
     position: absolute;
     right: 3%;
@@ -167,8 +169,7 @@ font-size: 16px;
     position: relative;
                       font-family: sans-serif;
                        ">
-                        Taza de
-                        l dia: <strong style="
+                        Monto retiro: <strong style="
                               font-weight: bold;
     position: absolute;
     right: 3%;

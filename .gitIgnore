@@ -1,6 +1,3 @@
-node_modules
-bakend
-.pnp
 .pnp.js
 server.js
 vcointransfer.zip

@@ -1,331 +1,559 @@
 
 module.exports = (pedido) => {
     
-return `
-
-<!DOCTYPE html>
-    
+return `<!doctype html>
 <html>
+
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-no-scale=1, user-scalable=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            font-size:8px !important;
-        }
-        body{
-            font-family: sans-serif;
-            width:100%;
-            position:relative;
-            margin:0 auto;
+    <title>Invoice</title>
+    <link rel="license" href="http://www.opensource.org/licenses/mit-license/">
+    <style type="text/css">
+        /* reset */
+
+        * {
+            border: 0;
+            box-sizing: content-box;
+            color: inherit;
+            font-family: inherit;
+            font-size: 10px;
+            font-style: inherit;
+            font-weight: inherit;
+            line-height: 2.2;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            vertical-align: top;
+            font-family: sans-serif !important;
         }
 
-        h1,
-        h2,
-        h3,
-        h4 {
-            color: rgb(16, 108, 160);
-            line-height: 2;
+        /* content editable */
+
+        *[contenteditable] {
+            border-radius: 0.25em;
+            min-width: 1em;
+            outline: 0;
+            cursor: pointer;
+            display: inline-block;
         }
 
-        h1,
-        h2 {
+        *[contenteditable]:hover,
+        *[contenteditable]:focus,
+        td:hover *[contenteditable],
+        td:focus *[contenteditable],
+        img.hover {
+            background: #DEF;
+            box-shadow: 0 0 1em 0.5em #DEF;
+        }
+
+        /*span[contenteditable] { display: inline-block; }*/
+
+        /* heading */
+
+        h1 {
+            font: bold 100% sans-serif;
+            text-align: center;
             text-transform: uppercase;
+        }
+
+        /* table */
+
+        table {
+            font-size: 75%;
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 2px;
+        }
+
+        th,
+        td {
+            border-width: 1px;
+            position: relative;
+            text-align: left;
+        }
+
+        th,
+        td {
+            border-radius: 0.25em;
+            border-style: solid;
+        }
+
+        th {
+            background: #115479;
+            border-color: #BBB;
+            color: white;
+        }
+
+        td {
+            border-color: #DDD;
+        }
+
+        /* page */
+
+        html {
+            font: sans-serif;
+            overflow: auto;
+        }
+
+        html {
+            background: #fff;
+            cursor: default;
+        }
+
+        body {
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        #wrapper {
+            margin: 0 auto;
+            width: 14.5cm;
+        }
+
+        body {
+            background: #FFF;
+        }
+
+        /* header */
+
+        header {
+            margin: 1em auto 0;
+        }
+
+        header:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
+
+        header h1 {
+            background: #000;
+            border-radius: 0.25em;
+            color: #FFF;
+            margin: 0 0 1em;
+            padding: 0.5em 0;
+        }
+
+
+
+        header span {
+            margin: 0 0 1em 1em;
+            max-height: 25%;
+            max-width: 60%;
+            position: relative;
+        }
+
+        header img {
+            max-height: 40px;
+            background-color: #115479;
+            border-radius: 5px;
+            margin: 5px auto 0;
+            padding: 10px 15px 5px 10px;
+        }
+
+        header input {
+            cursor: pointer;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            height: 100%;
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
+        /* article */
+
+        article,
+        article address,
+        table.meta,
+        table.inventory {
+            margin: 0 0 1em;
+        }
+
+        article:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
+
+        article h1 {
+            clip: rect(0 0 0 0);
+            position: absolute;
+        }
+
+        /* table meta & balance */
+
+        table.meta {
+            margin-top: 5px;
+            float: right;
+            width: 36%;
+            max-height: 50px;
+            padding: 0;
+        }
+        table.balance{
+            width: 56%;
+            float: right;
+        }
+        .siniestra{
+            float: left;
+        }
+
+        table.meta:after,
+        table.balance:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
+
+        /* table meta */
+        tbody{
+            line-height: normal;
+        }
+        tr,.Tol{
+            max-height: 15px;
+            min-height: 10px;
+            
+        }
+        table.meta th , .Tol >tr>th {
+            width: 40%;
+            padding: 0;
+            line-height: 1.2;
+        }
+
+        table.meta td,.Tol >tr>td {
+            width: 60%;
+            padding: 0;
+            line-height: 1.2;
+        }
+
+        /* table items */
+
+        table.inventory {
+            clear: both;
+            width: 100%;
+        }
+
+        table.inventory th {
+            font-weight: bold;
             text-align: center;
         }
 
-        h1 {
-            font-size: 16px !important;
+        table.inventory td:nth-child(1) {
+            width: 26%;
         }
 
-        h2 {
-            font-size: 14px !important;
+        table.inventory td:nth-child(2) {
+            width: 38%;
         }
 
-        p>span {
-            font-weight: lighter;
+        table.inventory td:nth-child(3) {
+            text-align: right;
+            width: 12%;
+        }
+
+        table.inventory td:nth-child(4) {
+            text-align: right;
+            width: 12%;
+        }
+
+        table.inventory td:nth-child(5) {
+            text-align: right;
+            width: 12%;
+        }
+
+        /* table balance */
+
+        table.balance th,
+        table.balance td {
+            width: 50%;
+        }
+
+        table.balance td {
+            text-align: right;
+        }
+
+        /* aside */
+
+        aside h1 {
+            border: none;
+            border-width: 0 0 1px;
+            margin: 0 0 1em;
+        }
+
+        aside h1 {
+            border-color: #999;
+            border-bottom-style: solid;
+        }
+        
+
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact;
+            }
+
+            html {
+                background: none;
+                padding: 0;
+            }
+
+            body {
+                box-shadow: none;
+                margin: 0;
+            }
+
+            span:empty {
+                display: none;
+            }
+        }
+
+        @page {
+            margin: 0;
+        }
+        /*---------  MIOS  ----------*/
+         p>span {
             line-height: 2;
             color: #106ca0;
-            font-size: 12px !important;
+            font-size: 11px !important;
+             padding: 5px;
             text-transform: uppercase;
             word-wrap: break-word !important;
         }
-        /*-------------------------------------------
--------------   Detalles table ------------------
----------------------------------------------*/
-        .Cabecera{
-            background-color: rgb(16, 108, 160);
-            margin: 0;
-            padding: 0;
-            height: 60px;
-        }
-        .Cabecera>img{
-            height: 50px;
-            padding: 5px 10px;
-            float:left;
-        }
-        .Cabecera>h1{
-            color: white;
-        }
-        .DatosDetalles{
-            position: relative;
-            margin: 0px auto;
-            width: 95%;
-        }
-        .DatosDetalles>div {
-            background-color: #e1f5fc;
-            margin: 10px auto;
-            padding: 5px 10px;
-            height: 150px;
-            overflow:hidden;
-            border-radius: 10px;
-        }
-        .Remitente{
-          float: left;
-            width: 40%;
-        }
-        .Destino{
-           float: right;
-            width: 40%;           
-        }
-
-        .DatosDetalles>div>h2 {
-            text-transform: uppercase;
+        .Cuentas{
+            width: 60px !important;
+            font-size: 9px !important;
             line-height: 2;
-            font-size: 12px !important;
-            margin-top: -15px;
-        }
-
-        .DatosDetalles>div>p>span {
-            font-weight: bold;
-            color: rgb(16, 108, 160);
-        }
-
-        .DatosDetalles>div>p {
-            text-align: left;
-            margin: 0 3%;
-            font-size: 12px !important;
-            color: #767676;
-            line-height: 1.4;
-            text-transform: capitalize;
-        }
-
-        .DatosDetalles>span {
-            width: 90%;
-            margin: 0 auto;
-        }
-        .Totales{
-            width: 90%;
-            margin: 0 auto;
-        }
-        .Totales>span{
-            width: 48%;
-            margin: 0 auto;
-        }
-        .Totales>span>p {
-            text-align: left;
-            border-bottom: 1px solid #5f8e44;
-            line-height: 2;
-            font-size: 14px !important;
-            text-transform: capitalize;
-            position: relative;
-        }
-
-        .Totales>span>p>span {
-            font-weight: bold;
-            position: absolute;
-            right: 3%;
-            color: #5f8e44;
-        }
-
-        .TotalDestino{
-            font-size: 12px !important;
-            line-height: 1.8;
-        }
-        .TotalRemitente{
-            float: left;
-        }
-        .TotalDestino{
-             float: right;   
         }
         .Cortar{
             width: 100%;
             height: 0px;
-            padding: 30px 0;
+            padding: 15px 0;
             clear: both;
             border-bottom: 3px dashed grey;
         }
+        .Firmas{
+            width: 14.5cm;
+            margin: 30px 0 0;
+        }
+        .FirmaOperador,.FirmaRemintente{
+            width: 7.25cm !important;
+            margin: 0 auto;
+            position: relative;
+            text-align: center;
+        }
+        .FirmaOperador{
+            float: left; 
+            text-align: center;
+        }
+        .FirmaRemintente{
+            clear: both;
+            padding: 10cm;
+            text-align: center;
+        }
+
     </style>
-
-    <title>tablero</title>
-
+ 
 </head>
 
 <body>
-
-    <main>
-        <article>
-          <div class="Cabecera">
-              <img src="https://storagevcoin.ml/images/logo-menu.jpg" alt="">
-              <h1>Factura de orden #${pedido.idPedido}</h1>
-          </div>
-           <div class="DatosDetalles">
-            <div class="Remitente">
-                <h2>Remitente</h2>
-                <p>
-                    <span>Moneda:</span> ${pedido.monedaDeposito}
-                    <br>
-                    <span>Nombres:</span> ${pedido.nombreUsuario}
-                    <br>
-                    <span>Doc. Identidad:</span> ${pedido.dniUsuario}
-                    <br>
-                    <span>Telefono:</span> ${pedido.telefonoUsuario}
-                    <br>
-                    <span>Referencia Deposito:</span> ${pedido.referenciaDeposito?pedido.referenciaDeposito:'por definir'}
-                </p>
-            </div>
-            
-            <div class="Destino">
-                <h2>${pedido.status==='pagada' || pedido.status==='completada' ?'destinatario':'Cuenta Vcoin'}</h2>
-                <p>
-                    <span>Pais:</span> ${pedido.paisVcoin?pedido.paisVcoin:''}
-                    <br>
-                    <span>Nombres:</span> ${pedido.titularVcoin?pedido.titularVcoin:''}
-                    <br>
-                    <span>Doc. IDENTIDAD</span> ${pedido.dniTitularVcoin?pedido.dniTitularVcoin:''}
-                    <br>
-                    <span>Banco:</span> ${pedido.bancoVcoin?pedido.bancoVcoin:''}
-                    <br>
-                    <span>Numero de cuenta:</span>
-                    ${pedido.nCuentaVcoin?pedido.nCuentaVcoin:''}
-                    <br>
-                </p>
-            </div>
-            </div>
-            <div class="Totales">
-            <span class="TotalRemitente">
-                <p>
-                    monto: <span>
-                        ${pedido.montoDeposito}
-                    </span>
-                </p>
-                <p>
-                    Taza del dia: <span>
-                        ${pedido.tazaCambio}
-                    </span>
-                </p>
-                <p>
-                    Operador: <span>
-                        ${pedido.nombreOperador}
-                    </span>
-                </p>
-            </span>
-            <span class="TotalDestino">
-            <p>
-                    Fecha: <span>
-                        ${pedido.fechaPedido}
-                    </span>
-                </p>
-                <p>
-                    referencia bancaria: <span>
-                        ${pedido.referenciaRetiro?pedido.referenciaRetiro:'por definir'}
-                    </span>
-                </p>
-                <p>
-                    total recibir: <span className="TotalDestino">
-                        ${pedido.montoRetiro} bsf
-                    </span>
-                </p>
-            </span>
-            </div>
-        </article>
-        
-        <div class="Cortar"></div>
-        <br/>
-        <br/>
-
-        <article>
-          <div class="Cabecera">
-              <img src="./img/logoTransparente.png" alt="">
-              <h1>Factura de orden #${pedido.idPedido}</h1>
-          </div>
-           <div class="DatosDetalles">
-            <div class="Remitente">
-            <h2>Remitente</h2>
-            <p>
-                <span>Moneda:</span> ${pedido.monedaDeposito}
-                <br>
-                <span>Nombres:</span> ${pedido.nombreUsuario}
-                <br>
-                <span>Doc. Identidad:</span> ${pedido.dniUsuario}
-                <br>
-                <span>Telefono:</span> ${pedido.telefonoUsuario}
-                <br>
-                <span>Referencia Deposito:</span> ${pedido.referenciaDeposito?pedido.referenciaDeposito:'por definir'}
-            </p>
-            </div>
-            <span class="F"><div class="flecha"></div></span>
-            <div class="Destino">
-                <h2>${pedido.status==='pagada' || pedido.status==='completada' ?'destinatario':'Cuenta Vcoin'}</h2>
-                <p>
-                    <span>Pais:</span> ${pedido.paisVcoin?pedido.paisVcoin:''}
-                    <br>
-                    <span>Nombres:</span> ${pedido.titularVcoin?pedido.titularVcoin:''}
-                    <br>
-                    <span>Doc. IDENTIDAD</span> ${pedido.dniTitularVcoin?pedido.dniTitularVcoin:''}
-                    <br>
-                    <span>Banco:</span> ${pedido.bancoVcoin?pedido.bancoVcoin:''}
-                    <br>
-                    <span>Numero de cuenta:</span>
-                    ${pedido.nCuentaVcoin?pedido.nCuentaVcoin:''}
-                    <br>
-                </p>
-            </div>
-            </div>
-            <div class="Totales">
-            <span class="TotalRemitente">
-                <p>
-                    monto: <span>
-                        ${pedido.montoDeposito}
-                    </span>
-                </p>
-                <p>
-                    Taza del dia: <span>
-                        ${pedido.tazaCambio}
-                    </span>
-                </p>
-                <p>
-                    Operador: <span>
-                        ${pedido.nombreOperador}
-                    </span>
-                </p>
-            </span>
-            <span class="TotalDestino">
-            <p>
-                    Fecha: <span>
-                        ${pedido.fechaPedido}
-                    </span>
-                </p>
-                <p>
-                    referencia bancaria: <span>
-                    ${pedido.referenciaRetiro?pedido.referenciaRetiro:'por definir'}
-                    </span>
-                </p>
-                <p>
-                    total recibir: <span className="TotalDestino">
-                        ${pedido.montoRetiro} bsf
-                    </span>
-                </p>
-            </span>
+    <div id="wrapper">
+        <header>
+            <span><img alt="" src="https://storagevcoin.ml/images/logo_correo.png" /></span>
+            <table class="meta">
+                <tr>
+                    <th><span>Orden #</span></th>
+                    <td><span>${pedido.idPedido}</span></td>
+                </tr>
+                <tr>
+                    <th><span>Fecha</span></th>
+                    <td><span>${pedido.fechaPedido}</span></td>
+                </tr>
+            </table>
+        </header>
+        <article>      
+            <table class="inventory">
+                <thead>
+                    <tr>
+                        <th><span>Remitente</span></th>
+                        <th><span>${pedido.status==='pagada' || pedido.status==='completada' ?'destinatario':'Cuenta Vcoin'}</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>Moneda:</span> ${pedido.monedaDeposito}
+                                <br>
+                                <span>Nombres:</span> ${pedido.nombreUsuario}
+                                <br>
+                                <span>Doc. Identidad:</span> ${pedido.dniUsuario}
+                                <br>
+                                <span>Telefono:</span> ${pedido.telefonoUsuario}
+                                <br>
+                                <span>Referencia Deposito:</span> ${pedido.referenciaDeposito?pedido.referenciaDeposito:'por definir'}
+                            </p>
+                        </td>
+                        <td class="Cuentas">
+                            <p>
+                                <span>Pais:</span> ${pedido.paisVcoin?pedido.paisVcoin:''}
+                                <br>
+                                <span>Nombres:</span> ${pedido.titularVcoin?pedido.titularVcoin:''}
+                                <br>
+                                <span>Doc. IDENTIDAD</span> ${pedido.dniTitularVcoin?pedido.dniTitularVcoin:''}
+                                <br>
+                                <span>Banco:</span> ${pedido.bancoVcoin?pedido.bancoVcoin:''}
+                                <br>
+                                <span>Numero de cuenta:</span>
+                                ${pedido.nCuentaVcoin?pedido.nCuentaVcoin:''}
+                                <br>
+                            </p>
+                       </td>
+                    </tr>
+                    <tr>
+                       <td>
+                        <table class="Tol">
+                <tr>
+                    <th class="Cuentas"><span>Monto</span></th>
+                    <td><span>${pedido.montoDeposito}</span></td>
+                </tr>
+                <tr>
+                    <th class="Cuentas"><span>Taza</span></th>
+                    <td><span>${pedido.tazaCambio} </span></td>
+                </tr>
+                <tr>
+                    <th class="Cuentas"><span>Operador</span></th>
+                    <td><span>${pedido.nombreOperador}</span></td>
+                </tr>
+            </table>
+                   </td>
+                   <td>
+                       <table>
+              
+                <tr>
+                    <th class="Cuentas"><span>N° Referencia</span></th>
+                    <td><span>${pedido.referenciaRetiro?pedido.referenciaRetiro:'por definir'}</span></td>
+                </tr>
+                <tr>
+                    <th class="Cuentas"><span>Total</span></th>
+                    <td><span>${pedido.montoRetiro} bsf</span></td>
+                </tr>
+            </table>
+                   </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="Firmas">
+                         <div class="FirmaOperador">
+                          <p>Operador:    _______________________</p>
+                      </div>
+                      <div class="FirmaRemitente">
+                          <p>Remitente:    _______________________</p>
+                      </div>
             </div>
         </article>
-        
-    </main>
+    </div>
+    <div class="Cortar"></div>
+    <div id="wrapper">
+        <header>
+            <span><img alt="" src="https://storagevcoin.ml/images/logo_correo.png" /></span>
+            <table class="meta">
+                <tr>
+                    <th><span>Orden #</span></th>
+                    <td><span>${pedido.idPedido}</span></td>
+                </tr>
+                <tr>
+                    <th><span>Fecha</span></th>
+                    <td><span>${pedido.fechaPedido}</span></td>
+                </tr>
+            </table>
+        </header>
+        <article>      
+            <table class="inventory">
+                <thead>
+                    <tr>
+                        <th><span>Remitente</span></th>
+                        <th><span>${pedido.status==='pagada' || pedido.status==='completada' ?'destinatario':'Cuenta Vcoin'}</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>Moneda:</span> ${pedido.monedaDeposito}
+                                <br>
+                                <span>Nombres:</span> ${pedido.nombreUsuario}
+                                <br>
+                                <span>Doc. Identidad:</span> ${pedido.dniUsuario}
+                                <br>
+                                <span>Telefono:</span> ${pedido.telefonoUsuario}
+                                <br>
+                                <span>Referencia Deposito:</span> ${pedido.referenciaDeposito?pedido.referenciaDeposito:'por definir'}
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>Pais:</span> ${pedido.paisVcoin?pedido.paisVcoin:''}
+                                <br>
+                                <span>Nombres:</span> ${pedido.titularVcoin?pedido.titularVcoin:''}
+                                <br>
+                                <span>Doc. IDENTIDAD</span> ${pedido.dniTitularVcoin?pedido.dniTitularVcoin:''}
+                                <br>
+                                <span>Banco:</span> ${pedido.bancoVcoin?pedido.bancoVcoin:''}
+                                <br>
+                                <span>Numero de cuenta:</span>
+                                ${pedido.nCuentaVcoin?pedido.nCuentaVcoin:''}
+                                <br>
+                            </p>
+                       </td>
+                    </tr>
+                    <tr>
+                       <td>
+                        <table class="Tol">
+                <tr>
+                    <th class="Cuentas"><span>Monto</span></th>
+                    <td><span>${pedido.montoDeposito}</span></td>
+                </tr>
+                <tr>
+                    <th class="Cuentas"><span>Taza</span></th>
+                    <td><span>${pedido.tazaCambio} </span></td>
+                </tr>
+                <tr>
+                    <th class="Cuentas"><span>Operador</span></th>
+                    <td><span>${pedido.nombreOperador}</span></td>
+                </tr>
+            </table>
+                   </td>
+                   <td>
+                       <table>
+              
+                <tr>
+                    <th class="Cuentas"><span>N° Referencia</span></th>
+                    <td><span>${pedido.referenciaRetiro?pedido.referenciaRetiro:'por definir'}</span></td>
+                </tr>
+                <tr>
+                    <th class="Cuentas"><span>Total</span></th>
+                    <td><span>${pedido.montoRetiro} bsf</span></td>
+                </tr>
+            </table>    
+                   </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="Firmas">
+                         <div class="FirmaOperador">
+                          <p>Operador:    _______________________</p>
+                      </div>
+                      <div class="FirmaRemitente">
+                          <p>Remitente:    _______________________</p>
+                      </div>
+            </div>
+        </article>
+    </div>
 </body>
 
 </html>

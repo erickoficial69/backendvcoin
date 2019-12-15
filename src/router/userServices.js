@@ -7,9 +7,12 @@ var smtpConfig = {
     port: 465,
     secure: true, // use SSL
     auth: {
-        user: 'Pruebasvcointransfer@gmail.com',
-        pass: '7878984654'
-    }
+        user: 'vcointransfer@gmail.com',
+        pass: 'Nicole2407'
+    },
+    tls: {
+            rejectUnauthorized: false
+        }
 };
  
 var smtpTransport = nodemailer.createTransport(smtpConfig); 
@@ -39,7 +42,7 @@ router.post('/registerUser', async(rq,rs)=>{
         const regi = await pool.query('insert into usuarios set ?', [newUser])
 
          var mailOptions = {
-        from: 'Pruebasvcointransfer@gmail.com',
+        from: 'vcointransfer@gmail.com',
         to: `${correo}`, 
         subject:'Corfirmar registro',
         html:`
@@ -74,7 +77,7 @@ router.post('/registerUser', async(rq,rs)=>{
                padding: 0 20px;
                margin-bottom: 50px;
                ">
-                    Para contuniar con el registro de tu cuenta en VcoinTransfer verifica este correo usando el boton <strong style="
+                    Para continuar con el registro de tu cuenta en VcoinTransfer verifica este correo usando el boton <strong style="
                 color: rgb(16, 108, 160);
                 font-family: sans-serif;
                 font-size: 14px;
@@ -133,7 +136,7 @@ router.post('/recoverpass', async(rq,rs)=>{
         const user = await pool.query('select token from usuarios where correo =?', [correo])
 
         var mailOptions = {
-            from: 'Pruebasvcointransfer@gmail.com',
+            from: 'vcointransfer@gmail.com',
             to: `${correo}`, 
             subject:'Recuperacion de contraseña',
             html:`
@@ -156,7 +159,7 @@ router.post('/recoverpass', async(rq,rs)=>{
                    padding: 0 20px;
                    margin-bottom: 50px;
                    ">
-                        Para contuniar verifica este correo usando el boton <strong style="
+                        Para continuar verifica este correo usando el boton <strong style="
                     color: rgb(16, 108, 160);
                     font-family: sans-serif;
                     font-size: 14px;

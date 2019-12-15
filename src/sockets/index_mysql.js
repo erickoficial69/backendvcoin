@@ -6,9 +6,12 @@ var smtpConfig = {
     port: 465,
     secure: true, // use SSL
     auth: {
-        user: 'Pruebasvcointransfer@gmail.com',
-        pass: '7878984654'
-    }
+        user: 'vcointransfer@gmail.com',
+        pass: 'Nicole2407'
+    },
+    tls: {
+            rejectUnauthorized: false
+        }
 };
 
 var smtpTransport = nodemailer.createTransport(smtpConfig);
@@ -191,9 +194,10 @@ const newOrder = async(pedido)=>{
                 tipoCuentaVcoin:banco[0].tipoCuenta,
                 mensaje:''    
               }
+          
               var mailCliente = {
                 from: 'Pruebasvcointransfer@gmail.com',
-                to: `${usuario[0].correo}`, 
+                to: `${datosCorreo.correoUsuario}`, 
                 subject:'Nuevo pedido',
                 html:invoicemailNewOrder(datosCorreo)
             }
@@ -204,9 +208,6 @@ const newOrder = async(pedido)=>{
                 html:invoicemailNewOrder(datosCorreo)
             }
             await pool.query('insert into pedidos set ?', [datosPedido])
-            pedidos_clientes(pedido)
-            ws.emit('newPedido','Tienes un nuevo encargo')
-            pedidosGenerales()
 
             smtpTransport.sendMail(mailCliente, function(error, response){
             if(error){
@@ -223,6 +224,10 @@ const newOrder = async(pedido)=>{
                     console.log('ok')
                     }
                 });
+
+            pedidos_clientes(pedido)
+            ws.emit('newPedido','Tienes un nuevo encargo')
+            pedidosGenerales()
         }
         catch(e){
             console.log(e)
@@ -308,7 +313,7 @@ const updatePedidoAdm = async(data)=>{
             try{
                 const pedido = await pool.query(`select * from pedidos where idPedido= ${data.idPedido}`)
 
-                const cliente = await pool.query(`select nombre,apellido,correo,rango from usuarios where idUsuario = ${pedido[0].idUsuario}`)
+                const cliente = await pool.query(`select * from usuarios where idUsuario = ${pedido[0].idUsuario}`)
 
                 const mensaje ={
                    titulo:`${cliente[0].nombre}  ${cliente[0].apellido}`,
@@ -368,7 +373,7 @@ const updatePedidoAdm = async(data)=>{
                             var mailOptions = {
                                 from: 'Pruebasvcointransfer@gmail.com',
                                 to: `${dataFinal.correoUsuario},${dataFinal.correoOperador}`, 
-                                subject:'Corfirmar registro',
+                                subject:'Pedido actualizado '+dataFinal.status,
                                 html:invoicemailNewOrder(dataFinal)
                             }
                             
