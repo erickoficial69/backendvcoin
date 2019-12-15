@@ -216,6 +216,7 @@ return `<!DOCTYPE html>
 <body>
 
     <main>
+    tasa
         <article>
           <div class="Cabecera">
               <img src="./img/logoTransparente.png" alt="">
@@ -262,7 +263,7 @@ return `<!DOCTYPE html>
                     </span>
                 </p>
                 <p>
-                    Taza del dia: <span>
+                    Tasa del dia: <span>
                         ${pedido.tazaCambio}
                     </span>
                 </p>

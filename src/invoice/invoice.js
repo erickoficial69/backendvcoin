@@ -422,7 +422,7 @@ return `<!doctype html>
                     <td><span>${pedido.montoDeposito}</span></td>
                 </tr>
                 <tr>
-                    <th class="Cuentas"><span>Taza</span></th>
+                    <th class="Cuentas"><span>Tasa</span></th>
                     <td><span>${pedido.tazaCambio} </span></td>
                 </tr>
                 <tr>
@@ -519,7 +519,7 @@ return `<!doctype html>
                     <td><span>${pedido.montoDeposito}</span></td>
                 </tr>
                 <tr>
-                    <th class="Cuentas"><span>Taza</span></th>
+                    <th class="Cuentas"><span>Tasa</span></th>
                     <td><span>${pedido.tazaCambio} </span></td>
                 </tr>
                 <tr>
