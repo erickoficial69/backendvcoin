@@ -7,8 +7,8 @@ var smtpConfig = {
     port: 465,
     secure: true, // use SSL
     auth: {
-        user: 'vcointransfer@gmail.com',
-        pass: 'Nicole2407'
+        user: 'erickoficial69@gmail.com',
+        pass: 'gmail_69'
     },
     tls: {
             rejectUnauthorized: false
