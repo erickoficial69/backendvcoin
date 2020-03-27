@@ -1,47 +1,29 @@
 const pool = require('../mysql/mysql') 
 const {Router} = require('express') 
-const nodemailer = require('nodemailer')
 const pdf = require('html-pdf');
-const {join} = require('path')
+const {resolve} = require('path')
+const upload = require('./uploadsRoutes')
 
 const invoice = require('../invoice/invoice') 
-
-var smtpConfig = {
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // use SSL
-    auth: {
-        user: 'vcointransfer@gmail.com',
-        pass: 'Nicole2407'
-    },
-    tls: {
-            rejectUnauthorized: false
-        }
-};
- 
-var smtpTransport = nodemailer.createTransport(smtpConfig); 
 
 const router = Router()
 
 router.get('/', async (rq, rs)=>{
     
-    rs.send('ok')
+    rs.sendFile(resolve('public'))
 })
 
 router.post('/createpdf',async (rq,res)=>{
     const pedido = rq.body
-    
-    pdf.create(invoice(pedido)).toFile(join(__dirname,`../invoice/pdfs/invoice_${pedido.idPedido}.pdf`), (err) => {
-        if(err) {
-            res.send(Promise.reject());
-        }
-        res.send('ok');
-    });
-})
 
-router.get('/getpdf/:idPedido',async (rq,rs)=>{
-    const {idPedido} = rq.params
-    rs.sendFile(join(__dirname,`../invoice/pdfs/invoice_${idPedido}.pdf`))
+        pdf.create(invoice(pedido)).toFile(`./public/pdfs/invoice/${pedido.idPedido}.pdf`, function(err, file) {
+            if (err){
+                console.log(err)
+                return res.send('error')
+            } else {
+                res.sendFile(resolve(`./public/pdfs/invoice/${pedido.idPedido}.pdf`))
+        }
+        });
 })
 router.post('/loginUser', async (rq, rs)=>{
     const {correo, password} = rq.body
@@ -91,7 +73,12 @@ router.get('/getUsers',async(rq,rs)=>{
         console.log()
     }
 })
-
+//upload photo
+router.post('/upload',upload.single('photo'),(rq,rs)=>{
+    
+    const name = 'uploads/'+rq.file.filename
+    return rs.send(name)
+})
 // show one user 
 router.get('/getUser/:correo',async(rq,rs)=>{
      const {correo} = rq.params
@@ -172,7 +159,6 @@ router.post('/pedido', async (rq, rs)=>{
                     dniUsuario:user[0].dni,
                     telefonoUsuario:user[0].telefono
                     }
-                    
                     rs.json(dataFinal)
             
     }
@@ -319,8 +305,6 @@ router.get('/bank/:id?', async(rq,rs)=>{
 })
 // get bank from pedido for country
 router.get('/bankAcountCountry/:usuario?/:pais?', async(rq,rs)=>{
-    
-    const idUsuario = rq.params.usuario
     const pais = rq.params.pais
     try{
         const success = await pool.query(`select * from cuentasbancarias where idTitular='1' and paisBanco ='${pais}'`)
@@ -377,5 +361,5 @@ router.post('/savemessage',async(rq,rs)=>{
     catch(e){
         rs.send(e)
     }
-})
+}) 
 module.exports = router

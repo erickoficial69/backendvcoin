@@ -1,7 +1,8 @@
 //import express server with http module
 const cors = require('cors') 
 const express = require('express') 
-const {join, extname} = require('path') 
+const {resolve} = require('path') 
+const {exec} = require('child_process') 
 
 const morgan = require('morgan') 
 
@@ -15,17 +16,16 @@ app.set('port', process.env.PORT || 4000)
 
 const io = require('socket.io')
 
-const pushEvents = require('./router/push-events') 
 const apiQuerys = require('./router/ApiQuerys_mysql') 
 const userServices = require('./router/userServices') 
+
 //router
-app.use(pushEvents)
+
 app.use(apiQuerys)
 app.use(userServices)
-//update photo
 
 //static files 
-app.use(express.static(join(__dirname, './public')))
+app.use(express.static(resolve('public')))
 
 
 const http = require('http').createServer(app)
@@ -50,5 +50,11 @@ const ip = ()=>{
     await http.listen(app.get('port'), '0.0.0.0')
     console.log(ip(),'puerto',app.get('port'))
     await socket(ws)
-    
+    const limit = 90000
+    function borrar(){
+        exec(`rm -rf ${resolve('./public/pdfs/invoice/*')}`, (err)=>{
+            if(err) return
+        })
+    }
+    setInterval(borrar,limit)
 })()

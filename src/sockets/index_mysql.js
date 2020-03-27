@@ -554,7 +554,8 @@ const newComent = async(data)=>{
 const coments = async()=>{
     try{
         const coments = await pool.query(`select * from resenas order by id desc limit 4`)
-        const usuarios = await pool.query(`select foto,nombre from usuarios where idUsuario = ${coments[0].idRemitente}`)
+        if(coments[0] != undefined){
+            const usuarios = await pool.query(`select foto,nombre from usuarios where idUsuario = ${coments[0].idRemitente?coments[0].idRemitente:1}`)
         const comentarios = coments.map(items=>{
             return{
                 id:items.id,
@@ -564,7 +565,11 @@ const coments = async()=>{
                 status:items.statusResena
             }
         })
+        
         ws.emit('coments',comentarios)
+        }else{
+            ws.emit('coments',[{status:0}])
+        }
     }
     catch(e){
         console.log(e)
@@ -575,7 +580,8 @@ const coments = async()=>{
 const comentsAdm = async()=>{
     try{
         const coments = await pool.query(`select * from resenas order by id desc`)
-        const usuarios = await pool.query(`select foto,nombre from usuarios where idUsuario = ${coments[0].idRemitente}`)
+        if(coments[0] != undefined){
+        const usuarios = await pool.query(`select foto,nombre from usuarios where idUsuario = ${coments[0].idRemitente?coments[0].idRemitente:1}`)
         const comentarios = coments.map(items=>{
             return{
                 id:items.id,
@@ -586,6 +592,9 @@ const comentsAdm = async()=>{
             }
         })
         ws.emit('comentsAdm',comentarios)
+        }else{
+            ws.emit('coments',[{status:0}])
+        }
     }
     catch(e){
         console.log(e)

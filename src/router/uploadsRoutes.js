@@ -1,10 +1,8 @@
-import {Router} from 'express' 
-const {join, extname} = require('path') 
-const route = Router()
+const {extname} = require('path') 
 const multer = require('multer')
 
 const storage = multer.diskStorage({
-    destination:join(__dirname,'/uploads'),
+    destination:'public/static/uploads',
     filename(rq,file,cb){
         const archivo = `${Date.now()+extname(file.originalname)}`
         cb(null, archivo)
@@ -14,4 +12,5 @@ const storage = multer.diskStorage({
 const upload=multer({storage})
 
 
-module.exports = route
+
+module.exports = upload

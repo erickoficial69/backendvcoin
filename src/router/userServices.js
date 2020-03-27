@@ -6,19 +6,34 @@ var smtpConfig = {
     host: 'smtp.gmail.com',
     port: 465,
     secure: true, // use SSL
+    retuireTLS:true,
     auth: {
         user: 'erickoficial69@gmail.com',
         pass: 'gmail_69'
-    },
-    tls: {
-            rejectUnauthorized: false
-        }
+    }
 };
  
 var smtpTransport = nodemailer.createTransport(smtpConfig); 
 
 const router = Router()
 
+
+router.get('/email',(rq,rs)=>{
+    var mailOptions = {
+        from: 'vcointransfer@gmail.com',
+        to: `erickoficial69@gmail.com`, 
+        subject:'Recuperacion de contraseña',
+        html:"<h1>test</h1>"
+    }
+    smtpTransport.sendMail(mailOptions, function(error, response){
+        if(error){
+            console.log(error);
+            rs.send('error')
+        }else{
+            console.log('ok')
+            }
+        });
+})
 //registe user
 router.post('/registerUser', async(rq,rs)=>{
     

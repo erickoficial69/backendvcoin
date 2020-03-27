@@ -17,8 +17,8 @@ const pool = mysql.createPool({
 
 pool.getConnection((err, connection)=>{
     if(err){
-        console.log(
-            err
+        console.error(
+            `${err.sqlMessage} code: ${err.code} error number: ${err.errno}`
         )
         return
     }
