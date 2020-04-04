@@ -1,8 +1,9 @@
 .pnp.js
 server.js
 vcointransfer.zip
+node_modules/
 # dependencies
-/node_modules
+/node_modules/
 /bakend
 /.pnp
 .pnp.js
