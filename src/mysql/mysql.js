@@ -2,7 +2,7 @@ const mysql = require('mysql')
 const {promisify} = require('util') 
 const credentials = {
     uri: process.env.MYSQL_URI || 'localhost',
-    pass: process.env.MYSQL_PASS || '',
+    pass: process.env.MYSQL_PASS || 'root',
     user: process.env.MYSQL_USER || 'root',
     db: process.env.MYSQL_DB || 'vc'
 }

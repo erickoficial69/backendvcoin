@@ -49,12 +49,12 @@ const ip = ()=>{
 (async()=>{
     await http.listen(app.get('port'), '0.0.0.0')
     console.log(ip(),'puerto',app.get('port'))
-    await socket(ws)
+    await socket(ws)/* 
     const limit = 90000
     function borrar(){
         exec(`rm -rf ${resolve('./public/pdfs/invoice/*')}`, (err)=>{
             if(err) return
         })
     }
-    setInterval(borrar,limit)
+    setInterval(borrar,limit) */
 })()
