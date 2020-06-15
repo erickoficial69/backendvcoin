@@ -18,7 +18,7 @@ router.post('/createpdf',async (rq,res)=>{
 
         pdf.create(invoice(pedido)).toFile(`./public/pdfs/invoice/${pedido.idPedido}.pdf`, function(err, file) {
             if (err){
-                console.log(err.stack)
+                console.log(err.name)
                 res.send("error")
                 return 
             }
