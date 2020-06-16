@@ -18,7 +18,7 @@ router.post('/createpdf',async (rq,res)=>{
 
         pdf.create(invoice(pedido)).toFile(`./public/pdfs/invoice/${pedido.idPedido}.pdf`, function(err, file) {
             if (err){
-                console.log(err.name)
+                (err.name)
                 res.send("error")
                 return 
             }
@@ -26,6 +26,9 @@ router.post('/createpdf',async (rq,res)=>{
                 res.sendFile(resolve(`./public/pdfs/invoice/${pedido.idPedido}.pdf`))
         }
         });
+})
+router.get('/getpdf/:id',(rq,res)=>{
+        res.sendFile(resolve(`./public/pdfs/invoice/${rq.params.id}.pdf`))
 })
 router.post('/loginUser', async (rq, rs)=>{
     const {correo, password} = rq.body
@@ -68,11 +71,10 @@ router.get('/paises', async (rq, rs)=>{
 router.get('/getUsers',async(rq,rs)=>{
     try{
         const users = await pool.query('select * from usuarios')
-        console.log(users)
         rs.json(users)
     }
     catch(e){
-        console.log()
+        console.log(e)
     }
 })
 //upload photo
@@ -89,7 +91,7 @@ router.get('/getUser/:correo',async(rq,rs)=>{
          rs.json(user)
      }
     catch(e){
-        console.log(e)
+        (e)
      }
  })
  
@@ -110,7 +112,7 @@ router.post('/upgradeUser',async(rq,rs)=>{
         rs.json(user[0])
     }
     catch(e){
-        console.log()
+        console.log(e)
     }
 })
 router.post('/setStatusUser',async(rq,rs)=>{
@@ -120,7 +122,7 @@ router.post('/setStatusUser',async(rq,rs)=>{
         rs.json(user[0])
     }
     catch(e){
-        console.log()
+        console.log(e)
     }
 })
 //pedido unico
@@ -165,7 +167,7 @@ router.post('/pedido', async (rq, rs)=>{
             
     }
       catch(e){
-         console.log(e)
+         (e)
       }       
     
 })
@@ -188,7 +190,7 @@ router.post('/rastrearpedido', async (rq,rs)=>{
         rs.send(resultado)
     } catch (error) {
         rs.send(error)
-        console.log(error)
+        (error)
     }
 })
 router.post('/updatePhoneNumber', async(rq,rs)=>{
@@ -200,7 +202,7 @@ router.post('/updatePhoneNumber', async(rq,rs)=>{
         rs.json({update:'ok'})
     }
     catch(err){
-        console.log(err)
+        (err)
     }
 })
 //update profile
@@ -215,7 +217,7 @@ router.post('/updateProfile', async(rq,rs)=>{
         rs.json({update:'ok'})
     }
     catch(err){
-        console.log(err)
+        (err)
     }
 })
 router.post('/updatePhoto', async (rq,rs)=>{
@@ -227,7 +229,7 @@ router.post('/updatePhoto', async (rq,rs)=>{
         rs.send('ok')
     }
     catch(e){
-        console.log(e)
+        (e)
     }
 })
 //mail verify
@@ -274,7 +276,7 @@ router.post('/newBankAcount', async(rq,rs)=>{
         return
     }
     catch(e){
-        console.log(e)
+        (e)
     }
 })
 // get bank unique
@@ -298,7 +300,7 @@ router.get('/bank/:id?', async(rq,rs)=>{
 
     try{
         const success = await pool.query('select * from cuentasbancarias where id =?', id)
-      console.log(success)
+      (success)
        return rs.json(success[0])
     }
     catch(e){
@@ -313,7 +315,7 @@ router.get('/bankAcountCountry/:usuario?/:pais?', async(rq,rs)=>{
        return rs.json(success)
     }
     catch(e){
-        console.log(e)
+        (e)
         rs.json(e)
     }
 })
@@ -326,7 +328,7 @@ router.get('/deletebank/:id?', async (rq, rs)=>{
               rs.json('borrado exitoso')   
      }
        catch(e){
-          console.log(e)
+          (e)
        }       
      
  })
@@ -338,7 +340,7 @@ router.get('/imgpaises', async (rq, rs)=>{
         
         rs.json(img)
     }catch(e){
-        console.log(e)
+        (e)
         rs.json('error')
     }      
     
@@ -350,7 +352,7 @@ router.get('/datapais/:name?', async (rq, rs)=>{
         const img = await pool.query('select * from imgpaises where nombre =?',name)
         rs.json(img)
     }catch(e){
-        console.log(e)
+        (e)
         rs.json('error')
     }      
     
